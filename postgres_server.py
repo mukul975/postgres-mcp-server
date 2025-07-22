@@ -1204,7 +1204,7 @@ async def PostgreSQL_vacuum_analyze_table(table_name: str, ctx: Context, schema_
     
     # Run VACUUM ANALYZE
     vacuum_query = f"VACUUM ANALYZE {schema_name}.{table_name}"
-    result = await execute_non_query(vacuum_query)
+    await execute_non_query(vacuum_query)
     
     # Get stats after vacuum
     after_stats = await execute_query(stats_query, schema_name, table_name)
