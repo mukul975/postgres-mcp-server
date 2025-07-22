@@ -1,244 +1,203 @@
-# PostgreSQL MCP Server
+# 🔄 PostgreSQL MCP Server – AI-Powered PostgreSQL Management & Monitoring
 
-A comprehensive Model Context Protocol (MCP) server for PostgreSQL database integration. This server provides extensive tools, resources, and prompts for complete PostgreSQL database management through AI assistants like Claude.
+> A powerful, AI-integrated PostgreSQL Model Context Protocol (MCP) server for **automated database operations, monitoring, security, diagnostics, and optimization**. Seamlessly manage PostgreSQL with tools and prompts designed for **AI assistants like Claude and ChatGPT**.
 
-## Features
+[![Python](https://img.shields.io/badge/Python-3.8%2B-blue.svg)](https://python.org)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Compatible-blue?logo=postgresql)](https://www.postgresql.org/)
+[![MCP](https://img.shields.io/badge/MCP%20Server-PostgreSQL%20Integration-brightgreen)]()
 
-This server offers over 200 specialized PostgreSQL tools covering all aspects of database administration, monitoring, and optimization.
+**GitHub Repository**: [https://github.com/mukul975/postgres-mcp-server.git](https://github.com/mukul975/postgres-mcp-server.git)
+
+---
+
+## 📌 Why Use This?
+
+* 🔍 Explore, diagnose & optimize PostgreSQL databases with **over 200 specialized tools**.
+* 💬 Interact naturally using **AI prompts** for SQL generation, health checks, and performance reviews.
+* 🛡️ Built-in security, permission validation, and error handling.
+* ⚙️ Developer-ready integration for **Claude**, **ChatGPT**, and custom agents.
+
+---
+
+## 🔑 Features at a Glance
 
 ### 🔧 Core Database Operations
-- **Database Management**: Create, list, and manage databases
-- **Schema Operations**: Create, drop, and manage schemas
-- **Table Operations**: List, describe, analyze tables with detailed statistics
-- **Query Execution**: Safe SELECT queries and controlled UPDATE/INSERT/DELETE operations
-- **Index Management**: Create, drop, analyze index usage and effectiveness
 
-### 📊 Advanced Analytics & Monitoring
-- **Performance Analysis**: Query performance, slow query analysis, execution plan examination
-- **Resource Monitoring**: Buffer cache analysis, memory usage, I/O statistics
-- **Lock Analysis**: Deadlock detection, lock contention monitoring, blocking queries
-- **Replication Monitoring**: Replication status, lag analysis, slot management
-- **Vacuum & Maintenance**: Autovacuum monitoring, table bloat analysis, maintenance recommendations
+* ✅ Create/list databases & schemas
+* ✅ Describe tables, analyze indexes
+* ✅ Safe SELECT, UPDATE, DELETE execution
 
-### 🛡️ Security & Administration
-- **User Management**: Create, drop, manage users and roles with detailed permissions
-- **Privilege Management**: Grant/revoke permissions, security auditing
-- **Connection Management**: Monitor active connections, analyze connection patterns
-- **Backup Analysis**: Backup status monitoring and recovery readiness assessment
+### 📊 Monitoring & Performance
 
-### 🚀 Performance Optimization
-- **Index Optimization**: Unused index detection, redundancy analysis, effectiveness metrics
-- **Query Optimization**: Plan cache analysis, query complexity assessment
-- **Buffer Pool Tuning**: Hit ratio analysis, cache efficiency metrics
-- **Configuration Tuning**: Parameter recommendations and system health checks
+* 📈 Query performance & execution plan insights
+* 🔒 Lock analysis, replication lag checks
+* 🚀 Index, query, and buffer pool optimization
 
-### 📈 Advanced Diagnostics
-- **Transaction Analysis**: Long-running transactions, wraparound monitoring
-- **Checkpoint Monitoring**: Checkpoint efficiency and timing analysis
-- **WAL Analysis**: Write-ahead log generation and archiving status
-- **Extension Management**: Installed extensions and usage analysis
+### 🛡️ Security & Access Control
 
-### 📊 Resources
-- **postgres://tables/{schema}**: Get table information for a schema
-- **postgres://table/{schema}/{table_name}**: Get detailed table structure
+* 👥 User creation, role auditing
+* 🔐 Privilege granting & connection monitoring
 
-### 💬 Prompts
-- **analyze_table**: Generate analysis prompts for database tables
-- **query_builder**: Help build SQL queries with proper guidance
+### ⚙️ Diagnostic Utilities
 
-## Installation
+* 🧪 Table bloat check, autovacuum insights
+* 💽 WAL logs, checkpoints, long transaction alerts
 
-1. Create a virtual environment (recommended):
+---
+
+## 🚀 Quick Start
+
+### 1. Installation
+
 ```bash
-# Create virtual environment
 python -m venv venv
-
-# Activate virtual environment
-# On Windows:
-venv\Scripts\activate
-# On macOS/Linux:
-source venv/bin/activate
-```
-
-2. Install dependencies:
-```bash
+source venv/bin/activate   # or venv\Scripts\activate on Windows
 pip install -r requirements.txt
 ```
 
-3. Set up your database connection:
-```bash
-# Copy the example environment file
-copy .env.example .env
+### 2. Configuration
 
-# Edit .env with your PostgreSQL connection details
-DATABASE_URL=postgresql://username:password@localhost:5432/database_name
+```bash
+cp .env.example .env  # or use copy on Windows
+# Update with:
+DATABASE_URL=postgresql://username:password@localhost:5432/db
 ```
 
-## Usage
+### 3. Run the Server
 
-### Running the Server
-
-#### Direct execution:
 ```bash
 python postgres_server.py
 ```
 
-#### With MCP development tools (if mcp CLI is installed):
+> ✅ For **MCP CLI users**:
+
 ```bash
 mcp dev postgres_server.py
 ```
 
-### Configuration with Claude Desktop
+---
 
-Add the following to your Claude Desktop configuration file (`claude_desktop_config.json`):
+## 🧠 Integrate with Claude Desktop
 
-**Windows:**
+#### Example config (`claude_desktop_config.json`):
+
+<details>
+<summary>Windows</summary>
+
 ```json
 {
   "mcpServers": {
     "postgres": {
       "command": "python",
-      "args": [
-        "postgres_server.py"
-      ],
+      "args": ["postgres_server.py"],
       "cwd": "C:\\path\\to\\postgres-mcp-server",
       "env": {
-        "DATABASE_URL": "postgresql://username:password@localhost:5432/database_name"
+        "DATABASE_URL": "postgresql://username:password@localhost:5432/database"
       }
     }
   }
 }
 ```
 
-**macOS/Linux:**
+</details>
+
+<details>
+<summary>macOS/Linux</summary>
+
 ```json
 {
   "mcpServers": {
     "postgres": {
       "command": "python",
-      "args": [
-        "postgres_server.py"
-      ],
+      "args": ["postgres_server.py"],
       "cwd": "/absolute/path/to/postgres-mcp-server",
       "env": {
-        "DATABASE_URL": "postgresql://username:password@localhost:5432/database_name"
+        "DATABASE_URL": "postgresql://username:password@localhost:5432/database"
       }
     }
   }
 }
 ```
 
-## Tool Categories
+</details>
 
-### Database Structure & Metadata
-- `PostgreSQL_list_tables` - List all tables in a schema
-- `PostgreSQL_describe_table` - Get detailed table column information
-- `PostgreSQL_list_schemas` - List all database schemas
-- `PostgreSQL_list_indexes` - Show indexes for a table
-- `PostgreSQL_get_foreign_keys` - Display foreign key relationships
-- `PostgreSQL_get_table_constraints` - Show all table constraints
+---
 
-### Query Execution & Analysis
-- `PostgreSQL_execute_select_query` - Execute SELECT queries safely
-- `PostgreSQL_execute_update_query` - Execute INSERT/UPDATE/DELETE queries
-- `PostgreSQL_explain_query` - Show query execution plans
-- `PostgreSQL_get_slow_queries` - Analyze slow running queries
-- `PostgreSQL_analyze_query_complexity` - Assess query performance characteristics
+## 🧰 Tooling Highlights
 
-### Performance Monitoring
-- `PostgreSQL_get_cache_hit_ratios` - Buffer cache performance metrics
-- `PostgreSQL_get_index_usage_stats` - Index utilization analysis
-- `PostgreSQL_get_table_statistics` - Comprehensive table statistics
-- `PostgreSQL_check_long_running_queries` - Monitor active long queries
-- `PostgreSQL_get_blocking_locks` - Identify blocking transactions
+| Category        | Tools                                                |
+| --------------- | ---------------------------------------------------- |
+| 🧱 Structure    | `list_tables`, `describe_table`, `get_foreign_keys`  |
+| 📄 Queries      | `execute_select_query`, `analyze_query_complexity`   |
+| 📈 Monitoring   | `get_cache_hit_ratios`, `check_long_running_queries` |
+| 🛠️ Maintenance | `get_bloated_tables`, `vacuum_analyze_table`         |
+| 🔐 Security     | `create_user`, `grant_privileges`, `list_users`      |
+| 🔁 Replication  | `get_replication_status`, `get_backup_status`        |
 
-### Maintenance & Optimization
-- `PostgreSQL_get_bloated_tables` - Find tables needing maintenance
-- `PostgreSQL_get_unused_indexes` - Identify unused indexes
-- `PostgreSQL_vacuum_analyze_table` - Perform table maintenance
-- `PostgreSQL_get_autovacuum_activity` - Monitor autovacuum operations
-- `PostgreSQL_analyze_database` - Update table statistics
+---
 
-### Security & User Management
-- `PostgreSQL_create_user` - Create database users
-- `PostgreSQL_grant_privileges` - Assign user permissions
-- `PostgreSQL_get_active_connections` - Monitor user connections
-- `PostgreSQL_list_users_and_roles` - Display all users and roles
-- `PostgreSQL_get_table_permissions` - Show table-level permissions
+## 💬 Prompt Examples for AI Agents
 
-### Replication & Backup
-- `PostgreSQL_get_replication_status` - Monitor replication health
-- `PostgreSQL_get_replication_slots` - Manage replication slots
-- `PostgreSQL_get_backup_status` - Check backup configuration
-- `PostgreSQL_get_wal_stats` - Write-ahead log statistics
+### 👁️ Database Insight
 
-## Example Interactions
+> "List all indexes in the public schema"
+> "Show detailed structure of the `orders` table"
 
-### Database Exploration
-```
-"Show me all tables in the public schema"
-"What's the structure of the users table?"
-"List all foreign key relationships for the orders table"
-```
+### 🚀 Performance
 
-### Performance Analysis
-```
-"Analyze the performance of my database and suggest optimizations"
-"Show me the slowest queries from the last hour"
-"Which indexes are not being used and can be dropped?"
-"What's the buffer cache hit ratio?"
-```
+> "What are the slowest queries?"
+> "Analyze unused indexes"
 
-### Monitoring & Diagnostics
-```
-"Are there any blocking queries right now?"
-"Show me tables with high bloat that need maintenance"
-"Check the replication lag status"
-"What connections are currently active?"
-```
+### ⚙ Maintenance
 
-### Maintenance Operations
-```
-"Run VACUUM ANALYZE on the products table"
-"Update statistics for the entire database"
-"Show me autovacuum activity for today"
-```
+> "VACUUM ANALYZE the `products` table"
+> "Find bloated tables in the database"
 
-### Security Auditing
-```
-"Show me all users and their privileges"
-"What permissions does user 'app_user' have?"
-"List all active database connections"
-```
+### 🔒 Security
 
-## Advanced Use Cases
+> "List all users and their roles"
+> "Show active connections and privilege levels"
 
-### Database Health Assessment
-The server can perform comprehensive health checks including:
-- Buffer pool efficiency analysis
-- Index usage optimization
-- Table bloat assessment
-- Replication lag monitoring
-- Connection pool analysis
+---
 
-### Performance Tuning
-- Identify slow queries and suggest optimizations
-- Analyze execution plans for query improvement
-- Monitor resource utilization patterns
-- Recommend index strategies
+## 📚 Use Cases
 
-### Proactive Monitoring
-- Set up monitoring for long-running transactions
-- Track database growth trends
-- Monitor backup and recovery readiness
-- Analyze connection patterns and bottlenecks
+### ✅ Health & Diagnostics
 
-## Security Features
+* Full PostgreSQL system health check
+* Query and index optimization
 
-- **Query Validation**: Only allows specific query types (SELECT for reads, INSERT/UPDATE/DELETE for writes)
-- **Connection Pooling**: Efficient database connection management with proper cleanup
-- **Parameter Sanitization**: Prevents SQL injection through parameterized queries
-- **Error Handling**: Comprehensive error handling with informative messages
-- **Logging**: Contextual logging for monitoring and debugging
-- **Environment Variables**: Secure credential management
-- **Permission Checks**: Respects database user permissions and access controls
+### ⚙ Admin & Automation
+
+* AI-based schema exploration
+* SQL query building with NLP
+
+### 🔐 Security & Auditing
+
+* Role auditing, connection analysis
+* Secure query validation and permission check
+
+---
+
+## 🗞️ License
+
+This project is licensed under the MIT License – see the [LICENSE](./LICENSE) file for details.
+
+---
+
+## ⭐ Contribute & Support
+
+If you find this useful, please:
+
+* ⭐ Star the repo
+* 🍝 Fork it
+* 🛠️ Submit issues or PRs
+
+> 🧠 Let’s build smarter PostgreSQL automation – one prompt at a time.
+
+---
+
+## 🔍 GitHub Search Tags
+
+`#PostgreSQL` `#MCP` `#AI_Database_Tools` `#Claude` `#Query_Optimizer` `#Database_Health_Check` `#Python_PostgreSQL` `#DevOps_AI` `#Database_Monitoring` `#OpenSource`
