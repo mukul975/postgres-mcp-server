@@ -1,0 +1,66 @@
+# Auto detect text files and perform LF normalization
+* text=auto
+
+# Source code files
+*.py text eol=lf
+*.json text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.toml text eol=lf
+*.cfg text eol=lf
+*.ini text eol=lf
+*.conf text eol=lf
+
+# Documentation files  
+*.md text eol=lf
+*.rst text eol=lf
+*.txt text eol=lf
+*.cff text eol=lf
+
+# SQL files
+*.sql text eol=lf
+
+# Shell scripts
+*.sh text eol=lf
+*.bash text eol=lf
+
+# Windows batch files
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Binary files
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.zip binary
+*.tar.gz binary
+*.tgz binary
+
+# Language specific overrides
+*.py linguist-language=Python
+*.sql linguist-language=SQL
+
+# Generated files
+*.pyc linguist-generated=true
+__pycache__/ linguist-generated=true
+*.egg-info/ linguist-generated=true
+build/ linguist-generated=true
+dist/ linguist-generated=true
+
+# Exclude from language detection
+*.json linguist-documentation
+*.yml linguist-documentation  
+*.yaml linguist-documentation
+.gitattributes linguist-documentation
+.gitignore linguist-documentation
+
+# Export ignore (what to exclude from git archive)
+.gitattributes export-ignore
+.gitignore export-ignore
+.github/ export-ignore
+tests/ export-ignore
+*.pyc export-ignore
+__pycache__/ export-ignore

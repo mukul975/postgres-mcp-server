@@ -1,0 +1,101 @@
+{
+  "name": "postgres-mcp-server",
+  "version": "1.0.0",
+  "description": "🔄 PostgreSQL MCP Server – AI-Powered PostgreSQL Management & Monitoring. A powerful, AI-integrated PostgreSQL Model Context Protocol (MCP) server for automated database operations, monitoring, security, diagnostics, and optimization. Seamlessly manage PostgreSQL with 237+ tools designed for AI assistants like Claude and ChatGPT.",
+  "main": "postgres_server.py",
+  "scripts": {
+    "start": "python postgres_server.py",
+    "test": "python test_server.py",
+    "setup": "python setup.py",
+    "dev": "mcp dev postgres_server.py"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mukul975/postgres-mcp-server.git"
+  },
+  "homepage": "https://github.com/mukul975/postgres-mcp-server",
+  "bugs": {
+    "url": "https://github.com/mukul975/postgres-mcp-server/issues"
+  },
+  "keywords": [
+    "postgresql",
+    "mcp",
+    "model-context-protocol",
+    "ai-database-tools",
+    "claude",
+    "chatgpt",
+    "database-monitoring",
+    "database-management",
+    "sql-automation",
+    "database-diagnostics",
+    "database-optimization",
+    "postgres",
+    "ai-integration",
+    "database-security",
+    "query-optimizer",
+    "database-health-check",
+    "python-postgresql",
+    "devops-ai",
+    "database-admin",
+    "db-tools",
+    "postgresql-server",
+    "database-automation",
+    "ai-assistant",
+    "database-performance",
+    "sql-tools",
+    "postgres-tools",
+    "database-analysis",
+    "postgres-monitoring",
+    "database-maintenance",
+    "ai-powered-database",
+    "postgresql-mcp",
+    "database-insights",
+    "postgres-diagnostics",
+    "database-cli",
+    "postgresql-automation"
+  ],
+  "author": {
+    "name": "mukul975",
+    "url": "https://github.com/mukul975"
+  },
+  "license": "MIT",
+  "engines": {
+    "python": ">=3.8"
+  },
+  "os": [
+    "win32",
+    "darwin",
+    "linux"
+  ],
+  "topics": [
+    "postgresql",
+    "mcp-server",
+    "ai-database-tools",
+    "claude-integration",
+    "chatgpt-tools",
+    "database-monitoring",
+    "database-management",
+    "sql-automation",
+    "database-diagnostics",
+    "database-optimization",
+    "postgres-tools",
+    "ai-integration",
+    "database-security",
+    "query-optimizer",
+    "database-health-check",
+    "python-postgresql",
+    "devops-automation",
+    "database-admin",
+    "database-performance",
+    "postgres-monitoring",
+    "database-maintenance",
+    "ai-powered-database",
+    "postgresql-mcp",
+    "database-insights",
+    "postgres-diagnostics",
+    "database-automation",
+    "model-context-protocol",
+    "ai-assistant-tools",
+    "database-analysis"
+  ]
+}

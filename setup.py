@@ -41,7 +41,6 @@ def setup_virtual_environment():
 
 def install_dependencies():
     """Install required dependencies."""
-    activation_script = "venv\\Scripts\\activate" if platform.system() == "Windows" else "source venv/bin/activate"
     pip_command = "venv\\Scripts\\pip" if platform.system() == "Windows" else "venv/bin/pip"
     
     return run_command(f"{pip_command} install -r requirements.txt", "Installing dependencies")
