@@ -5,9 +5,7 @@ import json
 import logging
 from typing import Any, Dict, List, Optional
 import asyncpg
-from asyncpg import Record
 from mcp.server.fastmcp import FastMCP, Context
-from mcp.server.fastmcp.resources import base
 from pydantic import BaseModel, Field
 
 # Set up logging

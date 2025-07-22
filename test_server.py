@@ -10,7 +10,7 @@ import os
 from postgres_server import (
     PostgreSQL_list_tables, 
     PostgreSQL_describe_table, 
-    PostgreSQL_execute_query,
+    execute_query,
     TableInfo,
     ColumnInfo
 )
@@ -31,7 +31,7 @@ async def test_connection():
 async def test_list_tables():
     """Test listing tables in public schema"""
     try:
-        tables = await list_tables("public")
+        tables = await PostgreSQL_list_tables("public")
         print(f"✅ Found {len(tables)} tables in 'public' schema")
         for table in tables[:5]:  # Show first 5 tables
             print(f"  - {table.table_name} ({table.table_type})")
