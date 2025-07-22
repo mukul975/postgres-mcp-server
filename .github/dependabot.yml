@@ -1,0 +1,34 @@
+version: 2
+updates:
+  # Enable version updates for Python dependencies
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 10
+    reviewers:
+      - "mukul975"
+    labels:
+      - "dependencies"
+      - "security"
+    commit-message:
+      prefix: "deps"
+      prefix-development: "deps-dev"
+    # Group security updates together
+    groups:
+      security-updates:
+        patterns:
+          - "*"
+        update-types:
+          - "security-update"
+    # Automatically merge minor and patch updates for known safe packages
+    auto-merge:
+      dependency-type: "development"
+      update-type: "semver:patch"
+    # Ignore specific packages if needed
+    ignore:
+      # Example: ignore major version updates for specific packages
+      # - dependency-name: "some-package"
+      #   update-types: ["version-update:semver-major"]
