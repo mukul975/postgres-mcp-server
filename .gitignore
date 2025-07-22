@@ -10,3 +10,6 @@ wheels/
 .venv
 venv/
 mcp_env/
+
+# GitHub setup scripts (sensitive/temporary)
+scripts/setup_github_repo.py
