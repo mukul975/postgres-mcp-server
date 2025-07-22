@@ -6,7 +6,7 @@ abstract: "A powerful, AI-integrated PostgreSQL Model Context Protocol (MCP) ser
 authors:
   - family-names: "Mahipal"
     given-names: "Mahipal"
-    orcid: ""
+    orcid: "0009-0003-4474-946X"
 repository-code: "https://github.com/mukul975/postgres-mcp-server"
 url: "https://github.com/mukul975/postgres-mcp-server"
 license: MIT
