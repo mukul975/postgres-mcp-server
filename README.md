@@ -47,8 +47,13 @@
 Search across 237+ PostgreSQL tools built for this MCP server using the live search bar:
 
 
+<!-- Tool Search Input -->
 <input type="text" id="toolSearch" placeholder="Search PostgreSQL Tools..." style="width:100%;padding:10px;font-size:16px;border-radius:8px;border:1px solid #ccc;">
+
+<!-- Results List -->
 <ul id="toolResults" style="list-style:none;padding-left:0;"></ul>
+
+<!-- Search Script -->
 <script>
   fetch('https://raw.githubusercontent.com/mukul975/postgres-mcp-server/main/tools/postgresql_tools_list.json')
     .then(response => response.json())
@@ -62,6 +67,7 @@ Search across 237+ PostgreSQL tools built for this MCP server using the live sea
       });
     });
 </script>
+
 ---
 
 ## 📚 Tool Categories
