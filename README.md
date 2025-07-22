@@ -46,9 +46,7 @@
 🔍 PostgreSQL Tool Search (All 237 Tools Included)
 Search across 237+ PostgreSQL tools built for this MCP server using the live search bar:
 
-html
-Copy
-Edit
+
 <input type="text" id="toolSearch" placeholder="Search PostgreSQL Tools..." style="width:100%;padding:10px;font-size:16px;border-radius:8px;border:1px solid #ccc;">
 <ul id="toolResults" style="list-style:none;padding-left:0;"></ul>
 <script>
