@@ -43,7 +43,7 @@
 
 * 🧪 Table bloat check, autovacuum insights
 * 💽 WAL logs, checkpoints, long transaction alerts
-🔍 PostgreSQL Tool Search (All 237 Tools Included)
+##🔍 PostgreSQL Tool Search (All 237 Tools Included)
 Search across 237+ PostgreSQL tools built for this MCP server using the live search bar:
 
 
@@ -68,7 +68,7 @@ Search across 237+ PostgreSQL tools built for this MCP server using the live sea
       });
     });
 </script>
-
+'''
 
 ---
 
