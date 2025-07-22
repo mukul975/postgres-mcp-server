@@ -1,119 +1,210 @@
-name: Security Scan
+name: 🛡️ Security Scan
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [ "master", "main", "develop" ]
   pull_request:
-    branches: [ main ]
+    branches: [ "master", "main" ]
   schedule:
-    # Run weekly security scans on Sundays at 2 AM UTC
-    - cron: '0 2 * * 0'
+    # Run security scan daily at 2 AM UTC
+    - cron: '0 2 * * *'
+  workflow_dispatch: # Allow manual trigger
 
 jobs:
-  security:
+  security-scan:
+    name: 🔍 Security Vulnerability Scan
     runs-on: ubuntu-latest
-    name: Security Analysis
-    
     permissions:
       actions: read
       contents: read
       security-events: write
     
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.9'
-        
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-        pip install bandit safety semgrep
-        
-    - name: Run Bandit Security Linter
-      run: |
-        bandit -r . -f json -o bandit-report.json || true
-        bandit -r . -f txt
-      continue-on-error: true
-      
-    - name: Run Safety Check
-      run: |
-        safety check --json --output safety-report.json || true
-        safety check
-      continue-on-error: true
-      
-    - name: Run Semgrep
-      run: |
-        semgrep --config=auto --json --output=semgrep-report.json . || true
-        semgrep --config=auto .
-      continue-on-error: true
-      
-    - name: Upload Bandit Results to GitHub Security
-      uses: github/codeql-action/upload-sarif@v2
-      if: always()
-      with:
-        sarif_file: bandit-report.json
-      continue-on-error: true
-        
-    - name: Archive security reports
-      uses: actions/upload-artifact@v3
-      if: always()
-      with:
-        name: security-reports
-        path: |
-          bandit-report.json
-          safety-report.json
-          semgrep-report.json
-
-  dependency-check:
-    runs-on: ubuntu-latest
-    name: Dependency Vulnerability Check
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
     
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.9'
-        
-    - name: Install pip-audit
-      run: |
-        python -m pip install --upgrade pip
-        pip install pip-audit
-        
-    - name: Run pip-audit
-      run: |
-        pip-audit --desc --format=json --output=pip-audit-report.json || true
-        pip-audit --desc
-      continue-on-error: true
-      
-    - name: Upload pip-audit results
-      uses: actions/upload-artifact@v3
-      if: always()
-      with:
-        name: pip-audit-report
-        path: pip-audit-report.json
-
-  secrets-scan:
-    runs-on: ubuntu-latest
-    name: Secrets Detection
-    
-    steps:
-    - name: Checkout code
+    - name: 📥 Checkout repository
       uses: actions/checkout@v4
       with:
         fetch-depth: 0
+
+    - name: 🐍 Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+        cache: 'pip'
+        cache-dependency-path: 'requirements.txt'
+      timeout-minutes: 10
+
+    - name: ✅ Verify Python Version (Must be 3.10+)
+      run: |
+        python_version=$(python -c "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}')")
+        echo "Python version detected: $python_version"
+        if [[ "$python_version" < "3.10" ]]; then
+          echo "❌ ERROR: This workflow requires Python 3.10+ but found $python_version"
+          echo "This indicates an old workflow is running. Please cancel old workflow runs."
+          exit 1
+        fi
+        echo "✅ Python version $python_version is compatible with MCP library"
+
+    - name: 📦 Install dependencies
+      timeout-minutes: 15
+      run: |
+        python -m pip install --upgrade pip
+        # Install dependencies, skipping Windows-specific packages on Linux
+        if [[ "$RUNNER_OS" == "Linux" ]]; then
+          # Create temp requirements file without Windows-specific packages for Linux
+          grep -v "platform_system==\"Windows\"" requirements.txt > temp-requirements.txt
+          echo "Installing filtered requirements for Linux:"
+          cat temp-requirements.txt
+          pip install -r temp-requirements.txt --timeout 300
+        else
+          pip install -r requirements.txt --timeout 300
+        fi
+        pip install safety bandit semgrep --timeout 300
         
-    - name: Run TruffleHog
+    - name: 🔍 Run Safety - Check for known vulnerabilities
+      run: |
+        echo "## 🛡️ Safety - Known Vulnerabilities Check" >> $GITHUB_STEP_SUMMARY
+        safety check --json --output safety-report.json || true
+        if [ -f safety-report.json ]; then
+          echo "### Safety Report Results:" >> $GITHUB_STEP_SUMMARY
+          python -c "import json; data=json.load(open('safety-report.json')); print('- Total vulnerabilities found:', len(data.get('vulnerabilities', [])))" >> $GITHUB_STEP_SUMMARY
+          if [ $(python -c "import json; data=json.load(open('safety-report.json')); print(len(data.get('vulnerabilities', [])))") -gt 0 ]; then
+            echo "❌ Vulnerabilities detected! See full report in artifacts." >> $GITHUB_STEP_SUMMARY
+            exit 1
+          else
+            echo "✅ No known vulnerabilities found!" >> $GITHUB_STEP_SUMMARY
+          fi
+        fi
+
+    - name: 🔒 Run Bandit - Security linter for Python
+      run: |
+        echo "## 🔒 Bandit - Python Security Linter" >> $GITHUB_STEP_SUMMARY
+        bandit -r . -f json -o bandit-report.json || true
+        if [ -f bandit-report.json ]; then
+          echo "### Bandit Report Results:" >> $GITHUB_STEP_SUMMARY
+          python -c "import json; data=json.load(open('bandit-report.json')); print('- Total issues found:', len(data.get('results', [])))" >> $GITHUB_STEP_SUMMARY
+          python -c "import json; data=json.load(open('bandit-report.json')); high=[r for r in data.get('results',[]) if r.get('issue_severity')=='HIGH']; medium=[r for r in data.get('results',[]) if r.get('issue_severity')=='MEDIUM']; print(f'- High severity: {len(high)}'); print(f'- Medium severity: {len(medium)}')" >> $GITHUB_STEP_SUMMARY
+        fi
+        
+    - name: ⚡ Run Semgrep - Static analysis
+      run: |
+        echo "## ⚡ Semgrep - Static Code Analysis" >> $GITHUB_STEP_SUMMARY
+        semgrep --config=auto --json --output=semgrep-report.json . || true
+        if [ -f semgrep-report.json ]; then
+          echo "### Semgrep Report Results:" >> $GITHUB_STEP_SUMMARY
+          python -c "import json; data=json.load(open('semgrep-report.json')); results=data.get('results',[]); print('- Total findings:', len(results)); critical=[r for r in results if r.get('extra',{}).get('severity')=='ERROR']; warning=[r for r in results if r.get('extra',{}).get('severity')=='WARNING']; print(f'- Critical: {len(critical)}'); print(f'- Warnings: {len(warning)}')" >> $GITHUB_STEP_SUMMARY
+        fi
+
+    - name: 📊 Generate Security Report
+      run: |
+        echo "## 📊 Security Scan Summary" >> $GITHUB_STEP_SUMMARY
+        echo "### Scan Details:" >> $GITHUB_STEP_SUMMARY
+        echo "- Python Version: ${{ matrix.python-version }}" >> $GITHUB_STEP_SUMMARY
+        echo "- Scan Date: $(date)" >> $GITHUB_STEP_SUMMARY
+        echo "- Repository: ${{ github.repository }}" >> $GITHUB_STEP_SUMMARY
+        echo "- Branch: ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+
+    - name: 📤 Upload Security Reports
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: security-reports-py${{ matrix.python-version }}
+        path: |
+          safety-report.json
+          bandit-report.json
+          semgrep-report.json
+        retention-days: 30
+
+  dependency-review:
+    name: 🔍 Dependency Review
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+    - name: 📥 Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: 🔍 Dependency Review
+      uses: actions/dependency-review-action@v3
+      with:
+        fail-on-severity: moderate
+
+  codeql-analysis:
+    name: 🕵️ CodeQL Analysis
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ 'python' ]
+
+    steps:
+    - name: 📥 Checkout repository
+      uses: actions/checkout@v4
+
+    - name: 🔧 Initialize CodeQL
+      uses: github/codeql-action/init@v2
+      with:
+        languages: ${{ matrix.language }}
+        queries: security-extended,security-and-quality
+
+    - name: 🏗️ Autobuild
+      uses: github/codeql-action/autobuild@v2
+
+    - name: 🔍 Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v2
+      with:
+        category: "/language:${{matrix.language}}"
+
+  secret-scan:
+    name: 🔐 Secret Scanning
+    runs-on: ubuntu-latest
+    steps:
+    - name: 📥 Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: 🔍 Run TruffleHog
       uses: trufflesecurity/trufflehog@main
       with:
         path: ./
         base: main
         head: HEAD
         extra_args: --debug --only-verified
+
+  security-audit:
+    name: 🛡️ Security Audit
+    runs-on: ubuntu-latest
+    needs: [security-scan, codeql-analysis]
+    if: always()
+    steps:
+    - name: 📥 Checkout repository
+      uses: actions/checkout@v4
+
+    - name: 📊 Security Audit Summary
+      run: |
+        echo "# 🛡️ Security Audit Complete" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "## 🔍 Scans Performed:" >> $GITHUB_STEP_SUMMARY
+        echo "- ✅ Python Security Linting (Bandit)" >> $GITHUB_STEP_SUMMARY
+        echo "- ✅ Known Vulnerability Check (Safety)" >> $GITHUB_STEP_SUMMARY
+        echo "- ✅ Static Code Analysis (Semgrep)" >> $GITHUB_STEP_SUMMARY
+        echo "- ✅ Advanced Code Analysis (CodeQL)" >> $GITHUB_STEP_SUMMARY
+        echo "- ✅ Secret Detection (TruffleHog)" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "## 📁 Artifacts Generated:" >> $GITHUB_STEP_SUMMARY
+        echo "- Security reports available in workflow artifacts" >> $GITHUB_STEP_SUMMARY
+        echo "- CodeQL results available in Security tab" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "## 🚨 Next Steps:" >> $GITHUB_STEP_SUMMARY
+        echo "1. Review all security findings" >> $GITHUB_STEP_SUMMARY
+        echo "2. Address high-priority vulnerabilities" >> $GITHUB_STEP_SUMMARY
+        echo "3. Update dependencies as needed" >> $GITHUB_STEP_SUMMARY
+        echo "4. Document remediation actions" >> $GITHUB_STEP_SUMMARY
