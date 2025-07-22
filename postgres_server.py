@@ -7957,5 +7957,5 @@ async def PostgreSQL_parameter_sniffing_detection() -> str:
 
 # Main entry point - ensure server runs correctly
 if __name__ == "__main__":
-    import asyncio
+
     mcp.run(transport='stdio')
