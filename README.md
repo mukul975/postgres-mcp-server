@@ -47,6 +47,7 @@
 Search across 237+ PostgreSQL tools built for this MCP server using the live search bar:
 
 
+```html
 <!-- Tool Search Input -->
 <input type="text" id="toolSearch" placeholder="Search PostgreSQL Tools..." style="width:100%;padding:10px;font-size:16px;border-radius:8px;border:1px solid #ccc;">
 
@@ -67,6 +68,7 @@ Search across 237+ PostgreSQL tools built for this MCP server using the live sea
       });
     });
 </script>
+
 
 ---
 
