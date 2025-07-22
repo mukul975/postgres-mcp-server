@@ -43,32 +43,6 @@
 
 * 🧪 Table bloat check, autovacuum insights
 * 💽 WAL logs, checkpoints, long transaction alerts
-##🔍 PostgreSQL Tool Search (All 237 Tools Included)
-Search across 237+ PostgreSQL tools built for this MCP server using the live search bar:
-
-
-```html
-<!-- Tool Search Input -->
-<input type="text" id="toolSearch" placeholder="Search PostgreSQL Tools..." style="width:100%;padding:10px;font-size:16px;border-radius:8px;border:1px solid #ccc;">
-
-<!-- Results List -->
-<ul id="toolResults" style="list-style:none;padding-left:0;"></ul>
-
-<!-- Search Script -->
-<script>
-  fetch('https://raw.githubusercontent.com/mukul975/postgres-mcp-server/main/tools/postgresql_tools_list.json')
-    .then(response => response.json())
-    .then(tools => {
-      const input = document.getElementById('toolSearch');
-      const results = document.getElementById('toolResults');
-      input.addEventListener('input', function () {
-        const query = this.value.toLowerCase();
-        const filtered = tools.filter(tool => tool.toLowerCase().includes(query));
-        results.innerHTML = filtered.map(tool => `<li>${tool}</li>`).join('');
-      });
-    });
-</script>
-'''
 
 ---
 
