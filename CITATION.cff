@@ -27,7 +27,7 @@ keywords:
   - "Database Performance"
   - "AI Integration"
 version: "1.0.0"
-date-released: "2024-01-01"
+date-released: "2025-07-21"
 preferred-citation:
   type: software
   title: "PostgreSQL MCP Server – AI-Powered PostgreSQL Management & Monitoring"
