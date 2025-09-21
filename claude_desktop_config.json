@@ -5,11 +5,12 @@
       "args": [
         "postgres_server.py"
       ],
-      "cwd": "Path to:\postgres-mcp-server",
+      "cwd": "Path to://postgres-mcp-server",
       "env": {
         "DATABASE_URL": "postgresql://postgres:your_actual_password@localhost:5432/postgres"
       }
     }
   }
 }
+
 
