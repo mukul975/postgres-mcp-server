@@ -4299,22 +4299,6 @@ async def PostgreSQL_get_lock_waits() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_prepared_transactions() -> List[Dict[str, Any]]:
-    """Get information about prepared transactions (two-phase commit)."""
-    query = """
-        SELECT 
-            gid as transaction_id,
-            prepared,
-            owner,
-            database
-        FROM pg_prepared_xacts
-        ORDER BY prepared
-    """
-    
-    rows = await execute_query(query)
-    return rows
-
-@mcp.tool()
 async def PostgreSQL_list_foreign_tables_detailed() -> List[Dict[str, Any]]:
     """Get detailed information about foreign tables and their servers."""
     query = """
@@ -5041,23 +5025,6 @@ async def PostgreSQL_get_index_usage_stats() -> List[Dict[str, Any]]:
         JOIN pg_stat_user_tables t ON i.relid = t.relid
         WHERE i.schemaname NOT IN ('information_schema', 'pg_catalog')
         ORDER BY index_bytes DESC, i.idx_tup_read DESC
-    """
-    
-    rows = await execute_query(query)
-    return rows
-
-@mcp.tool()
-async def PostgreSQL_get_prepared_transactions() -> List[Dict[str, Any]]:
-    """Get information about currently prepared transactions (two-phase commit)."""
-    query = """
-        SELECT 
-            gid as transaction_id,
-            prepared as prepared_time,
-            owner,
-            database,
-            EXTRACT(epoch FROM (now() - prepared)) as seconds_since_prepared
-        FROM pg_prepared_xacts
-        ORDER BY prepared ASC
     """
     
     rows = await execute_query(query)
