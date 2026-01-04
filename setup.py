@@ -24,11 +24,11 @@ def run_command(command, description):
 def check_python_version():
     """Check if Python version is compatible."""
     version = sys.version_info
-    if version.major == 3 and version.minor >= 8:
+    if version.major == 3 and version.minor >= 10:
         print(f"✅ Python {version.major}.{version.minor}.{version.micro} is compatible")
         return True
     else:
-        print(f"❌ Python {version.major}.{version.minor}.{version.micro} is not compatible. Requires Python 3.8+")
+        print(f"❌ Python {version.major}.{version.minor}.{version.micro} is not compatible. Requires Python 3.10+")
         return False
 
 def setup_virtual_environment():
