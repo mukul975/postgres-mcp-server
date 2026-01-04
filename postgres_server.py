@@ -5,6 +5,7 @@ import json
 import logging
 from typing import Any, Dict, List, Optional
 import asyncpg
+from asyncpg.pool import Pool
 from mcp.server.fastmcp import FastMCP, Context
 from pydantic import BaseModel, Field
 
@@ -29,10 +30,17 @@ if 'localhost' in DATABASE_URL:
 logger.info(f"Using DATABASE_URL: {DATABASE_URL.replace(DATABASE_URL.split('@')[0].split('//')[1], '***:***')}")
 
 # Connection pool for better performance
-connection_pool = None
+connection_pool: Optional[Pool] = None
 
-async def get_pool():
-    """Get or create the connection pool."""
+async def get_pool() -> Pool:
+    """Get or create the shared asyncpg connection pool.
+
+    Returns:
+        The initialized asyncpg connection pool.
+
+    Raises:
+        Exception: If the database connection pool cannot be created.
+    """
     global connection_pool
     if connection_pool is None:
         try:
@@ -49,10 +57,23 @@ async def get_pool():
             logger.error(f"❌ Failed to create database connection pool: {str(e)}")
             logger.error("Connection URL format: postgresql://user:***@host:port/database")
             raise Exception(f"Database connection failed: {str(e)}")
+    if connection_pool is None:
+        raise Exception("Database connection pool was not initialized")
     return connection_pool
 
-async def execute_query(query: str, *args) -> List[Dict[str, Any]]:
-    """Execute a query and return results as a list of dictionaries."""
+async def execute_query(query: str, *args: Any) -> List[Dict[str, Any]]:
+    """Execute a SQL query and return results as a list of dictionaries.
+
+    Args:
+        query: SQL query string.
+        *args: Positional query parameters.
+
+    Returns:
+        A list of rows represented as dictionaries.
+
+    Raises:
+        Exception: If the database operation fails.
+    """
     pool = await get_pool()
     async with pool.acquire() as conn:
         try:
@@ -61,12 +82,23 @@ async def execute_query(query: str, *args) -> List[Dict[str, Any]]:
         except Exception as e:
             raise Exception(f"Database error: {str(e)}")
 
-async def execute_non_query(query: str, *args) -> str:
-    """Execute a non-query (INSERT, UPDATE, DELETE) and return affected rows count."""
+async def execute_non_query(query: str, *args: Any) -> str:
+    """Execute a SQL statement that does not return rows.
+
+    Args:
+        query: SQL statement string.
+        *args: Positional query parameters.
+
+    Returns:
+        The asyncpg status string returned from execution.
+
+    Raises:
+        Exception: If the database operation fails.
+    """
     pool = await get_pool()
     async with pool.acquire() as conn:
         try:
-            result = await conn.execute(query, *args)
+            result: str = await conn.execute(query, *args)
             return result
         except Exception as e:
             raise Exception(f"Database error: {str(e)}")
@@ -1177,11 +1209,12 @@ async def PostgreSQL_get_table_permissions(table_name: str, schema_name: str = "
     return rows
 
 @mcp.tool()
-async def PostgreSQL_vacuum_analyze_table(table_name: str, ctx: Context, schema_name: str = "public") -> str:
+async def PostgreSQL_vacuum_analyze_table(table_name: str, ctx: Context, schema_name: str = "public") -> Dict[str, Any]:
     """Run VACUUM ANALYZE on a specific table to reclaim space and update statistics.
     
     Args:
         table_name: Name of the table
+        ctx: MCP request context.
         schema_name: Database schema name (default: public)
     """
     full_table_name = f"{schema_name}.{table_name}"
@@ -3487,7 +3520,8 @@ async def PostgreSQL_analyze_connection_pool_efficiency() -> Dict[str, Any]:
     
     # Add recommendations
     if 'efficiency_metrics' in result:
-        metrics = result['efficiency_metrics']
+        metrics_any = result['efficiency_metrics']
+        metrics: Dict[str, Any] = metrics_any if isinstance(metrics_any, dict) else {}
         recommendations = []
         
         if metrics.get('long_idle_transactions', 0) > 0:

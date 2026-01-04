@@ -11,20 +11,35 @@ import subprocess
 import platform
 
 
-def run_command(command, description):
-    """Run a command and handle errors."""
+def run_command(command: str, description: str) -> bool:
+    """Run a shell command and report whether it succeeded.
+
+    Args:
+        command: Command to execute.
+        description: Human-readable description used for console output.
+
+    Returns:
+        True if the command succeeded.
+
+    Raises:
+        OSError: If the command cannot be executed.
+    """
     print(f"🔄 {description}...")
     try:
-        result = subprocess.run(command, shell=True, check=True, capture_output=True, text=True)
+        subprocess.run(command, shell=True, check=True, capture_output=True, text=True)
         print(f"✅ {description} completed successfully")
-        return result.stdout
-    except subprocess.CalledProcessError as e:
-        print(f"❌ {description} failed: {e.stderr}")
-        return None
+        return True
+    except subprocess.CalledProcessError as called_process_error:
+        print(f"❌ {description} failed: {called_process_error.stderr}")
+        return False
 
 
-def check_python_version():
-    """Check if Python version is compatible."""
+def check_python_version() -> bool:
+    """Validate that the running Python version meets the project requirement.
+
+    Returns:
+        True if the current interpreter is Python 3.10 or newer.
+    """
     version = sys.version_info
     if version.major == 3 and version.minor >= 10:
         print(f"✅ Python {version.major}.{version.minor}.{version.micro} is compatible")
@@ -34,8 +49,12 @@ def check_python_version():
         return False
 
 
-def setup_virtual_environment():
-    """Set up virtual environment if it doesn't exist."""
+def setup_virtual_environment() -> bool:
+    """Create a local virtual environment if it does not already exist.
+
+    Returns:
+        True if the virtual environment exists or was created successfully.
+    """
     if os.path.exists('venv'):
         print("✅ Virtual environment already exists")
         return True
@@ -43,15 +62,23 @@ def setup_virtual_environment():
     return run_command("python -m venv venv", "Creating virtual environment")
 
 
-def install_dependencies():
-    """Install required dependencies."""
+def install_dependencies() -> bool:
+    """Install dependencies from requirements.txt into the virtual environment.
+
+    Returns:
+        True if dependency installation completed successfully.
+    """
     pip_command = "venv\\Scripts\\pip" if platform.system() == "Windows" else "venv/bin/pip"
 
     return run_command(f"{pip_command} install -r requirements.txt", "Installing dependencies")
 
 
-def setup_env_file():
-    """Set up .env file if it doesn't exist."""
+def setup_env_file() -> bool:
+    """Create a .env file from .env.example if needed.
+
+    Returns:
+        True if the .env file exists or was created successfully.
+    """
     if os.path.exists('.env'):
         print("✅ .env file already exists")
         return True
@@ -63,16 +90,16 @@ def setup_env_file():
             print("✅ Created .env file from .env.example")
             print("⚠️  Please edit .env file with your actual database credentials")
             return True
-        except Exception as e:
-            print(f"❌ Failed to create .env file: {e}")
+        except OSError as operating_system_error:
+            print(f"❌ Failed to create .env file: {operating_system_error}")
             return False
     else:
         print("❌ .env.example file not found")
         return False
 
 
-def main():
-    """Main setup function."""
+def main() -> None:
+    """Set up the local development environment for this repository."""
     print("🚀 Setting up PostgreSQL MCP Server Development Environment")
     print("=" * 60)
 
