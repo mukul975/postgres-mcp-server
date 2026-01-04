@@ -2424,7 +2424,7 @@ async def PostgreSQL_get_database_config() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_table_constraints() -> List[Dict[str, Any]]:
+async def PostgreSQL_get_all_constraints() -> List[Dict[str, Any]]:
     """Get all table constraints (CHECK, UNIQUE, PRIMARY KEY, FOREIGN KEY)."""
     query = """
         SELECT 
@@ -7982,9 +7982,9 @@ async def PostgreSQL_create_table(
     await ctx.info(f"Creating table {full_table_name} with {len(columns)} columns...")
 
     if not table_name.replace('_', '').isalnum():
-            raise ValueError("Table name must be alphanumeric")
+        raise ValueError("Table name must be alphanumeric")
     if not schema_name.replace('_', '').isalnum():
-            raise ValueError("Schema name must be alphanumeric")
+        raise ValueError("Schema name must be alphanumeric")
 
     col_defs = []
     for col in columns:
@@ -8009,7 +8009,6 @@ async def PostgreSQL_create_table(
     
     await ctx.info(f"Successfully created table {full_table_name}")
     return f"Table '{full_table_name}' created successfully."
-
 
 # Main entry point - ensure server runs correctly
 if __name__ == "__main__":
