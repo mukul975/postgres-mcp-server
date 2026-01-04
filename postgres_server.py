@@ -7953,6 +7953,64 @@ async def PostgreSQL_parameter_sniffing_detection() -> str:
     result = await execute_query(query)
     return json.dumps([dict(row) for row in result], default=str, indent=2)
 
+# Create Tools
+
+class ColumnDefinition(BaseModel):
+    """Definition for a table column."""
+    name: str = Field(description="Name of the column")
+    data_type: str = Field(description="PostgreSQL data type (e.g., INTEGER, VARCHAR(255), TEXT)")
+    is_primary_key: bool = Field(default=False, description="Whether this column is a primary key")
+    is_nullable: bool = Field(default=True, description="Whether the column can contain NULL values")
+    default_value: Optional[str] = Field(default=None, description="Default value expression")
+
+@mcp.tool()
+async def PostgreSQL_create_table(
+    table_name: str, 
+    columns: List[ColumnDefinition], 
+    ctx: Context,
+    schema_name: str = "public"
+) -> str:
+    """
+    Create a new table with specified columns.
+    
+    Args:
+        table_name: Name of the table
+        columns: List of column definitions
+        schema_name: Schema to create the table in (default: public)
+    """
+    full_table_name = f"{schema_name}.{table_name}"
+    await ctx.info(f"Creating table {full_table_name} with {len(columns)} columns...")
+
+    if not table_name.replace('_', '').isalnum():
+            raise ValueError("Table name must be alphanumeric")
+    if not schema_name.replace('_', '').isalnum():
+            raise ValueError("Schema name must be alphanumeric")
+
+    col_defs = []
+    for col in columns:
+        if not col.name.replace('_', '').isalnum():
+            raise ValueError(f"Column name '{col.name}' is invalid")
+        
+        def_part = f"{col.name} {col.data_type}"
+        if col.is_primary_key:
+            def_part += " PRIMARY KEY"
+        elif not col.is_nullable:
+            def_part += " NOT NULL"
+        
+        if col.default_value:
+            def_part += f" DEFAULT {col.default_value}"
+        
+        col_defs.append(def_part)
+    
+    cols_sql = ", ".join(col_defs)
+    query = f"CREATE TABLE {full_table_name} ({cols_sql})"
+    
+    await execute_non_query(query)
+    
+    await ctx.info(f"Successfully created table {full_table_name}")
+    return f"Table '{full_table_name}' created successfully."
+
+
 # Main entry point - ensure server runs correctly
 if __name__ == "__main__":
 
