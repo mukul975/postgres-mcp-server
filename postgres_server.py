@@ -24,7 +24,7 @@ DATABASE_URL = os.getenv(
 # Replace localhost with 127.0.0.1 to avoid DNS issues
 if 'localhost' in DATABASE_URL:
     DATABASE_URL = DATABASE_URL.replace('localhost', '127.0.0.1')
-    logger.info(f"Replaced localhost with 127.0.0.1 in DATABASE_URL")
+    logger.info("Replaced localhost with 127.0.0.1 in DATABASE_URL")
 
 logger.info(f"Using DATABASE_URL: {DATABASE_URL.replace(DATABASE_URL.split('@')[0].split('//')[1], '***:***')}")
 
@@ -47,7 +47,7 @@ async def get_pool():
             logger.info("✅ Database connection pool created successfully")
         except Exception as e:
             logger.error(f"❌ Failed to create database connection pool: {str(e)}")
-            logger.error(f"Connection URL format: postgresql://user:***@host:port/database")
+            logger.error("Connection URL format: postgresql://user:***@host:port/database")
             raise Exception(f"Database connection failed: {str(e)}")
     return connection_pool
 
@@ -896,8 +896,7 @@ async def PostgreSQL_get_sequence_value(sequence_name: str, schema_name: str = "
             "current_value": result[0]["current_value"],
             "next_value": result[0]["next_value"]
         }
-    except Exception as e:
-        # If sequence hasn't been used yet, currval will fail, so just get nextval
+    except asyncpg.exceptions.ObjectNotInPrerequisiteStateError:
         query = f"SELECT nextval('{schema_name}.{sequence_name}') as next_value"
         result = await execute_query(query)
         return {
@@ -4814,28 +4813,6 @@ async def PostgreSQL_get_connection_pool_stats() -> Dict[str, Any]:
     return rows[0] if rows else {}
 
 @mcp.tool()
-async def PostgreSQL_get_checkpoint_stats() -> Dict[str, Any]:
-    """Get checkpoint activity and WAL statistics for performance monitoring."""
-    query = """
-        SELECT 
-            checkpoints_timed,
-            checkpoints_req as checkpoints_requested,
-            checkpoint_write_time,
-            checkpoint_sync_time,
-            buffers_checkpoint,
-            buffers_clean,
-            maxwritten_clean,
-            buffers_backend,
-            buffers_backend_fsync,
-            buffers_alloc,
-            stats_reset
-        FROM pg_stat_bgwriter
-    """
-    
-    rows = await execute_query(query)
-    return rows[0] if rows else {}
-
-@mcp.tool()
 async def PostgreSQL_get_cache_hit_ratios() -> Dict[str, Any]:
     """Calculate cache hit ratios for buffer and index performance analysis."""
     query = """
@@ -4997,34 +4974,6 @@ async def PostgreSQL_get_table_size_summary() -> List[Dict[str, Any]]:
         FROM pg_tables
         WHERE schemaname NOT IN ('information_schema', 'pg_catalog')
         ORDER BY pg_total_relation_size(schemaname||'.'||tablename) DESC
-    """
-    
-    rows = await execute_query(query)
-    return rows
-
-@mcp.tool()
-async def PostgreSQL_get_index_usage_stats() -> List[Dict[str, Any]]:
-    """Get detailed index usage statistics and effectiveness metrics."""
-    query = """
-        SELECT 
-            t.schemaname,
-            t.tablename,
-            i.indexrelname as index_name,
-            i.idx_tup_read as index_reads,
-            i.idx_tup_fetch as index_fetches,
-            pg_size_pretty(pg_relation_size(i.indexrelid)) as index_size,
-            pg_relation_size(i.indexrelid) as index_bytes,
-            CASE 
-                WHEN i.idx_tup_read = 0 THEN 'UNUSED'
-                WHEN i.idx_tup_read < 100 THEN 'LOW USAGE'
-                WHEN i.idx_tup_read < 1000 THEN 'MODERATE USAGE'
-                ELSE 'HIGH USAGE'
-            END as usage_category,
-            ROUND(100.0 * i.idx_tup_fetch / GREATEST(i.idx_tup_read, 1), 2) as selectivity_ratio
-        FROM pg_stat_user_indexes i
-        JOIN pg_stat_user_tables t ON i.relid = t.relid
-        WHERE i.schemaname NOT IN ('information_schema', 'pg_catalog')
-        ORDER BY index_bytes DESC, i.idx_tup_read DESC
     """
     
     rows = await execute_query(query)
@@ -5219,28 +5168,6 @@ async def PostgreSQL_get_table_io_stats() -> List[Dict[str, Any]]:
         FROM pg_statio_user_tables st
         WHERE st.heap_blks_read + st.heap_blks_hit > 0
         ORDER BY (st.heap_blks_read + st.idx_blks_read) DESC
-    """
-    
-    rows = await execute_query(query)
-    return rows
-
-@mcp.tool()
-async def PostgreSQL_get_tablespace_usage() -> List[Dict[str, Any]]:
-    """Get tablespace usage information and disk space statistics."""
-    query = """
-        SELECT 
-            ts.spcname as tablespace_name,
-            pg_catalog.pg_tablespace_location(ts.oid) as location,
-            pg_size_pretty(pg_tablespace_size(ts.oid)) as size,
-            pg_tablespace_size(ts.oid) as size_bytes,
-            COALESCE(owner.rolname, 'Unknown') as owner,
-            array_to_string(ts.spcacl, ', ') as permissions,
-            COUNT(c.oid) as objects_count
-        FROM pg_tablespace ts
-        LEFT JOIN pg_authid owner ON ts.spcowner = owner.oid
-        LEFT JOIN pg_class c ON c.reltablespace = ts.oid
-        GROUP BY ts.oid, ts.spcname, owner.rolname, ts.spcacl
-        ORDER BY pg_tablespace_size(ts.oid) DESC
     """
     
     rows = await execute_query(query)
@@ -6252,44 +6179,6 @@ async def PostgreSQL_get_trigger_performance_impact() -> list[dict]:
         JOIN pg_stat_user_tables t ON t.tablename = tg.table_name AND t.schemaname = tg.table_schema
         WHERE tg.table_schema NOT IN ('information_schema', 'pg_catalog')
         ORDER BY relevant_operations DESC, t.schemaname, t.tablename
-    """
-    
-    rows = await execute_query(query)
-    return rows
-
-@mcp.tool()
-async def PostgreSQL_get_vacuum_analyze_recommendations() -> list[dict]:
-    """Generate vacuum and analyze recommendations based on table activity."""
-    query = """
-        SELECT 
-            schemaname,
-            tablename,
-            pg_size_pretty(pg_total_relation_size(schemaname||'.'||tablename)) as table_size,
-            n_dead_tup as dead_tuples,
-            n_live_tup as live_tuples,
-            ROUND((n_dead_tup::float / NULLIF(n_live_tup + n_dead_tup, 0)) * 100, 2) as dead_percentage,
-            last_vacuum,
-            last_autovacuum,
-            EXTRACT(DAYS FROM (now() - COALESCE(last_vacuum, last_autovacuum))) as days_since_vacuum,
-            last_analyze,
-            last_autoanalyze,
-            EXTRACT(DAYS FROM (now() - COALESCE(last_analyze, last_autoanalyze))) as days_since_analyze,
-            n_tup_ins + n_tup_upd + n_tup_del as total_modifications,
-            CASE 
-                WHEN n_dead_tup > 10000 AND n_dead_tup > n_live_tup * 0.2 THEN 'URGENT: Manual VACUUM needed'
-                WHEN n_dead_tup > 5000 AND n_dead_tup > n_live_tup * 0.1 THEN 'Recommend VACUUM'
-                WHEN EXTRACT(DAYS FROM (now() - COALESCE(last_vacuum, last_autovacuum))) > 7 THEN 'Consider scheduled VACUUM'
-                ELSE 'VACUUM OK'
-            END as vacuum_recommendation,
-            CASE 
-                WHEN EXTRACT(DAYS FROM (now() - COALESCE(last_analyze, last_autoanalyze))) > 7 AND (n_tup_ins + n_tup_upd + n_tup_del) > 1000 THEN 'ANALYZE recommended'
-                WHEN EXTRACT(DAYS FROM (now() - COALESCE(last_analyze, last_autoanalyze))) > 14 THEN 'ANALYZE overdue'
-                ELSE 'ANALYZE OK'
-            END as analyze_recommendation
-        FROM pg_stat_user_tables 
-        WHERE schemaname NOT IN ('information_schema', 'pg_catalog')
-        ORDER BY dead_percentage DESC, total_modifications DESC
-        LIMIT 30
     """
     
     rows = await execute_query(query)
