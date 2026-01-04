@@ -140,7 +140,7 @@ mcp dev postgres_server.py
 
 ---
 
-## 🔍 Tool Search & Complete Reference (237 Tools)
+## 🔍 Tool Search & Complete Reference (238 Tools)
 
 ### 🔎 Tool Search Bar
 
@@ -150,7 +150,7 @@ mcp dev postgres_server.py
 
 | Category | Count | Description |
 |----------|-------|-------------|
-| 🧱 **Core Database** | 25 | Basic database operations, schema management |
+| 🧱 **Core Database** | 26 | Basic database operations, schema management |
 | 👥 **User & Security** | 18 | User management, roles, permissions |
 | 📈 **Performance** | 45 | Monitoring, analysis, optimization |
 | 🔒 **Locks & Concurrency** | 22 | Lock analysis, blocking queries, deadlocks |
