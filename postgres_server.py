@@ -61,7 +61,7 @@ async def get_pool() -> Pool:
         raise Exception("Database connection pool was not initialized")
     return connection_pool
 
-async def execute_query(query: str, *args: Any) -> List[Dict[str, Any]]:
+async def execute_query(query: str, *args: Any):
     """Execute a SQL query and return results as a list of dictionaries.
 
     Args:
@@ -125,7 +125,7 @@ class QueryResult(BaseModel):
 # PostgreSQL Tools
 
 @mcp.tool()
-async def PostgreSQL_get_lock_statistics() -> List[Dict[str, Any]]:
+async def PostgreSQL_get_lock_statistics():
     """Get detailed statistics of database locks, including wait times."""
     query = """
         SELECT 
@@ -146,7 +146,7 @@ async def PostgreSQL_get_lock_statistics() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_prepared_transactions() -> List[Dict[str, Any]]:
+async def PostgreSQL_get_prepared_transactions():
     """Get the list and stats of prepared transactions, if any."""
     query = """
         SELECT 
@@ -162,7 +162,7 @@ async def PostgreSQL_get_prepared_transactions() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_detailed_foreign_tables() -> List[Dict[str, Any]]:
+async def PostgreSQL_get_detailed_foreign_tables():
     """Get advanced details about foreign tables and their servers."""
     query = """
         SELECT 
@@ -186,7 +186,7 @@ async def PostgreSQL_get_detailed_foreign_tables() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_event_triggers_detailed() -> List[Dict[str, Any]]:
+async def PostgreSQL_get_event_triggers_detailed():
     """Get comprehensive details about event triggers."""
     query = """
         SELECT 
@@ -209,7 +209,7 @@ async def PostgreSQL_get_event_triggers_detailed() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_publication_details() -> List[Dict[str, Any]]:
+async def PostgreSQL_get_publication_details():
     """Retrieve details of all logical replication publications."""
     query = """
         SELECT 
@@ -233,7 +233,7 @@ async def PostgreSQL_get_publication_details() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_full_text_search_configs() -> List[Dict[str, Any]]:
+async def PostgreSQL_get_full_text_search_configs():
     """List all full-text search configurations available."""
     query = """
         SELECT 
@@ -253,7 +253,7 @@ async def PostgreSQL_get_full_text_search_configs() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_autovacuum_stats_per_table() -> List[Dict[str, Any]]:
+async def PostgreSQL_get_autovacuum_stats_per_table():
     """Get autovacuum operation stats per table."""
     query = """
         SELECT 
@@ -284,7 +284,7 @@ async def PostgreSQL_get_autovacuum_stats_per_table() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_foreign_keys_referencing_table(table_name: str, schema_name: str = "public") -> List[Dict[str, Any]]:
+async def PostgreSQL_foreign_keys_referencing_table(table_name: str, schema_name: str = "public"):
     """List tables referencing the specified table via foreign keys."""
     query = """
         SELECT DISTINCT
@@ -314,7 +314,7 @@ async def PostgreSQL_foreign_keys_referencing_table(table_name: str, schema_name
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_table_rules() -> List[Dict[str, Any]]:
+async def PostgreSQL_get_table_rules():
     """Get all rules defined on tables."""
     query = """
         SELECT 
@@ -342,7 +342,7 @@ async def PostgreSQL_get_table_rules() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_partition_details() -> List[Dict[str, Any]]:
+async def PostgreSQL_get_partition_details():
     """Get partitioning details of tables and partition strategies."""
     query = """
         SELECT 
@@ -382,7 +382,7 @@ async def PostgreSQL_get_partition_details() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_replication_slot_infos() -> List[Dict[str, Any]]:
+async def PostgreSQL_get_replication_slot_infos():
     """Get detailed replication slot information."""
     query = """
         SELECT 
@@ -412,7 +412,7 @@ async def PostgreSQL_get_replication_slot_infos() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_backup_details() -> Dict[str, Any]:
+async def PostgreSQL_get_backup_details():
     """Get last known backup status and WAL archiving info."""
     query = """
         SELECT 
@@ -429,7 +429,7 @@ async def PostgreSQL_get_backup_details() -> Dict[str, Any]:
     return rows[0] if rows else {}
 
 @mcp.tool()
-async def PostgreSQL_get_query_plan_cache_stats() -> List[Dict[str, Any]]:
+async def PostgreSQL_get_query_plan_cache_stats():
     """Get statistics about cached query plans and their effectiveness."""
     query = """
         SELECT 
@@ -463,7 +463,7 @@ async def PostgreSQL_get_query_plan_cache_stats() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_constraint_violations() -> List[Dict[str, Any]]:
+async def PostgreSQL_get_constraint_violations():
     """Check for potential constraint violations and data integrity issues."""
     query = """
         WITH constraint_info AS (
@@ -499,7 +499,7 @@ async def PostgreSQL_get_constraint_violations() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_slow_query_patterns() -> List[Dict[str, Any]]:
+async def PostgreSQL_get_slow_query_patterns():
     """Analyze patterns in slow queries from pg_stat_statements."""
     query = """
         SELECT 
@@ -530,7 +530,7 @@ async def PostgreSQL_get_slow_query_patterns() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_database_growth_trend() -> List[Dict[str, Any]]:
+async def PostgreSQL_get_database_growth_trend():
     """Analyze database growth patterns over time using pg_stat_database."""
     query = """
         SELECT 
@@ -566,7 +566,7 @@ async def PostgreSQL_get_database_growth_trend() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_vacuum_progress() -> List[Dict[str, Any]]:
+async def PostgreSQL_get_vacuum_progress():
     """Monitor currently running VACUUM operations and their progress."""
     query = """
         SELECT 
@@ -595,7 +595,7 @@ async def PostgreSQL_get_vacuum_progress() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_materialized_view_stats() -> List[Dict[str, Any]]:
+async def PostgreSQL_get_materialized_view_stats():
     """Get statistics and refresh information for materialized views."""
     query = """
         SELECT 
@@ -628,7 +628,7 @@ async def PostgreSQL_get_materialized_view_stats() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_publication_subscription_details() -> Dict[str, List[Dict[str, Any]]]:
+async def PostgreSQL_get_publication_subscription_details():
     """Get logical replication publication and subscription details."""
     # Get publications
     pub_query = """
@@ -667,7 +667,7 @@ async def PostgreSQL_get_publication_subscription_details() -> Dict[str, List[Di
     }
 
 @mcp.tool()
-async def PostgreSQL_get_sequence_usage_stats() -> List[Dict[str, Any]]:
+async def PostgreSQL_get_sequence_usage_stats():
     """Analyze sequence usage patterns and potential exhaustion risks."""
     query = """
         SELECT 
@@ -707,7 +707,7 @@ async def PostgreSQL_get_sequence_usage_stats() -> List[Dict[str, Any]]:
 
 # Tools
 @mcp.tool()
-async def PostgreSQL_list_tables(schema_name: str = "public") -> List[TableInfo]:
+async def PostgreSQL_list_tables(schema_name: str = "public"):
     """List all tables in a schema.
     
     Args:
@@ -724,7 +724,7 @@ async def PostgreSQL_list_tables(schema_name: str = "public") -> List[TableInfo]
     return [TableInfo(**row) for row in rows]
 
 @mcp.tool()
-async def PostgreSQL_describe_table(table_name: str, schema_name: str = "public") -> List[ColumnInfo]:
+async def PostgreSQL_describe_table(table_name: str, schema_name: str = "public"):
     """Get detailed information about a table's columns.
     
     Args:
@@ -749,7 +749,7 @@ async def PostgreSQL_describe_table(table_name: str, schema_name: str = "public"
     return [ColumnInfo(**row) for row in rows]
 
 @mcp.tool()
-async def PostgreSQL_execute_select_query(query: str, ctx: Context) -> QueryResult:
+async def PostgreSQL_execute_select_query(query: str, ctx: Context):
     """Execute a SELECT query and return results.
     
     Args:
@@ -768,7 +768,7 @@ async def PostgreSQL_execute_select_query(query: str, ctx: Context) -> QueryResu
     return result
 
 @mcp.tool()
-async def PostgreSQL_execute_update_query(query: str, ctx: Context) -> str:
+async def PostgreSQL_execute_update_query(query: str, ctx: Context):
     """Execute an UPDATE, INSERT, or DELETE query.
     
     Args:
@@ -787,7 +787,7 @@ async def PostgreSQL_execute_update_query(query: str, ctx: Context) -> str:
     return f"Query executed successfully: {result}"
 
 @mcp.tool()
-async def PostgreSQL_get_table_size(table_name: str, schema_name: str = "public") -> Dict[str, Any]:
+async def PostgreSQL_get_table_size(table_name: str, schema_name: str = "public"):
     """Get the size information for a table.
     
     Args:
@@ -825,7 +825,7 @@ async def PostgreSQL_get_table_size(table_name: str, schema_name: str = "public"
     }
 
 @mcp.tool()
-async def PostgreSQL_get_table_count(table_name: str, schema_name: str = "public") -> Dict[str, Any]:
+async def PostgreSQL_get_table_count(table_name: str, schema_name: str = "public"):
     """Get the row count of a specific table.
     
     Args:
@@ -840,7 +840,7 @@ async def PostgreSQL_get_table_count(table_name: str, schema_name: str = "public
     }
 
 @mcp.tool()
-async def PostgreSQL_list_indexes(table_name: str, schema_name: str = "public") -> List[Dict[str, Any]]:
+async def PostgreSQL_list_indexes(table_name: str, schema_name: str = "public"):
     """List all indexes on a specific table.
     
     Args:
@@ -866,7 +866,7 @@ async def PostgreSQL_list_indexes(table_name: str, schema_name: str = "public") 
     return rows
 
 @mcp.tool()
-async def PostgreSQL_list_schemas() -> List[Dict[str, Any]]:
+async def PostgreSQL_list_schemas():
     """List all schemas in the database."""
     query = """
         SELECT 
@@ -889,7 +889,7 @@ async def PostgreSQL_list_schemas() -> List[Dict[str, Any]]:
 # Additional PostgreSQL Administrative Tools
 
 @mcp.tool()
-async def PostgreSQL_list_sequences(schema_name: str = "public") -> List[Dict[str, Any]]:
+async def PostgreSQL_list_sequences(schema_name: str = "public"):
     """List all sequences in a schema.
     
     Args:
@@ -912,7 +912,7 @@ async def PostgreSQL_list_sequences(schema_name: str = "public") -> List[Dict[st
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_sequence_value(sequence_name: str, schema_name: str = "public") -> Dict[str, Any]:
+async def PostgreSQL_get_sequence_value(sequence_name: str, schema_name: str = "public"):
     """Get the next value of a sequence without incrementing it.
     
     Args:
@@ -938,7 +938,7 @@ async def PostgreSQL_get_sequence_value(sequence_name: str, schema_name: str = "
         }
 
 @mcp.tool()
-async def PostgreSQL_list_users_and_roles() -> List[Dict[str, Any]]:
+async def PostgreSQL_list_users_and_roles():
     """List all database users and roles with their attributes."""
     query = """
         SELECT 
@@ -959,7 +959,7 @@ async def PostgreSQL_list_users_and_roles() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_active_connections() -> List[Dict[str, Any]]:
+async def PostgreSQL_get_active_connections():
     """Get information about currently active database connections."""
     query = """
         SELECT 
@@ -981,7 +981,7 @@ async def PostgreSQL_get_active_connections() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_database_size() -> List[Dict[str, Any]]:
+async def PostgreSQL_get_database_size():
     """Get size information for all databases in the cluster."""
     query = """
         SELECT 
@@ -997,7 +997,7 @@ async def PostgreSQL_get_database_size() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_tablespace_info() -> List[Dict[str, Any]]:
+async def PostgreSQL_get_tablespace_info():
     """Get information about all tablespaces."""
     query = """
         SELECT 
@@ -1013,7 +1013,7 @@ async def PostgreSQL_get_tablespace_info() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_list_views(schema_name: str = "public") -> List[Dict[str, Any]]:
+async def PostgreSQL_list_views(schema_name: str = "public"):
     """List all views in a schema.
     
     Args:
@@ -1032,7 +1032,7 @@ async def PostgreSQL_list_views(schema_name: str = "public") -> List[Dict[str, A
     return rows
 
 @mcp.tool()
-async def PostgreSQL_list_functions(schema_name: str = "public") -> List[Dict[str, Any]]:
+async def PostgreSQL_list_functions(schema_name: str = "public"):
     """List all functions and their definitions in a schema.
     
     Args:
@@ -1054,7 +1054,7 @@ async def PostgreSQL_list_functions(schema_name: str = "public") -> List[Dict[st
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_table_constraints(table_name: str, schema_name: str = "public") -> List[Dict[str, Any]]:
+async def PostgreSQL_get_table_constraints(table_name: str, schema_name: str = "public"):
     """Get all constraints (primary key, foreign keys, etc.) for a table.
     
     Args:
@@ -1088,7 +1088,7 @@ async def PostgreSQL_get_table_constraints(table_name: str, schema_name: str = "
     return rows
 
 @mcp.tool()
-async def PostgreSQL_list_databases() -> List[Dict[str, Any]]:
+async def PostgreSQL_list_databases():
     """List all databases in the PostgreSQL cluster."""
     query = """
         SELECT 
@@ -1108,7 +1108,7 @@ async def PostgreSQL_list_databases() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_server_version() -> Dict[str, Any]:
+async def PostgreSQL_get_server_version():
     """Get PostgreSQL server version and configuration information."""
     version_query = "SELECT version() as full_version"
     settings_query = """
@@ -1132,7 +1132,7 @@ async def PostgreSQL_get_server_version() -> Dict[str, Any]:
     }
 
 @mcp.tool()
-async def PostgreSQL_check_table_bloat(table_name: str, schema_name: str = "public") -> Dict[str, Any]:
+async def PostgreSQL_check_table_bloat(table_name: str, schema_name: str = "public"):
     """Check for table bloat statistics to identify tables that may need maintenance.
     
     Args:
@@ -1164,7 +1164,7 @@ async def PostgreSQL_check_table_bloat(table_name: str, schema_name: str = "publ
     return rows[0]
 
 @mcp.tool()
-async def PostgreSQL_list_triggers(table_name: str, schema_name: str = "public") -> List[Dict[str, Any]]:
+async def PostgreSQL_list_triggers(table_name: str, schema_name: str = "public"):
     """List all triggers on a specific table.
     
     Args:
@@ -1187,7 +1187,7 @@ async def PostgreSQL_list_triggers(table_name: str, schema_name: str = "public")
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_table_permissions(table_name: str, schema_name: str = "public") -> List[Dict[str, Any]]:
+async def PostgreSQL_get_table_permissions(table_name: str, schema_name: str = "public"):
     """Get permissions/grants on a specific table.
     
     Args:
@@ -1209,7 +1209,7 @@ async def PostgreSQL_get_table_permissions(table_name: str, schema_name: str = "
     return rows
 
 @mcp.tool()
-async def PostgreSQL_vacuum_analyze_table(table_name: str, ctx: Context, schema_name: str = "public") -> Dict[str, Any]:
+async def PostgreSQL_vacuum_analyze_table(table_name: str, ctx: Context, schema_name: str = "public"):
     """Run VACUUM ANALYZE on a specific table to reclaim space and update statistics.
     
     Args:
@@ -1252,7 +1252,7 @@ async def PostgreSQL_vacuum_analyze_table(table_name: str, ctx: Context, schema_
     }
 
 @mcp.tool()
-async def PostgreSQL_check_long_running_queries(min_duration_seconds: int = 60) -> List[Dict[str, Any]]:
+async def PostgreSQL_check_long_running_queries(min_duration_seconds: int = 60):
     """Check for queries that have been running longer than the specified duration.
     
     Args:
@@ -1279,7 +1279,7 @@ async def PostgreSQL_check_long_running_queries(min_duration_seconds: int = 60) 
     return rows
 
 @mcp.tool()
-async def PostgreSQL_grant_privileges(grantee: str, privilege: str, table_name: str, ctx: Context, schema_name: str = "public") -> str:
+async def PostgreSQL_grant_privileges(grantee: str, privilege: str, table_name: str, ctx: Context, schema_name: str = "public"):
     """Grant specific privileges on a table to a user or role.
     
     Args:
@@ -1303,7 +1303,7 @@ async def PostgreSQL_grant_privileges(grantee: str, privilege: str, table_name: 
     return f"Successfully granted {privilege.upper()} on {full_table_name} to {grantee}: {result}"
 
 @mcp.tool()
-async def PostgreSQL_revoke_privileges(grantee: str, privilege: str, table_name: str, ctx: Context, schema_name: str = "public") -> str:
+async def PostgreSQL_revoke_privileges(grantee: str, privilege: str, table_name: str, ctx: Context, schema_name: str = "public"):
     """Revoke specific privileges on a table from a user or role.
     
     Args:
@@ -1327,7 +1327,7 @@ async def PostgreSQL_revoke_privileges(grantee: str, privilege: str, table_name:
     return f"Successfully revoked {privilege.upper()} on {full_table_name} from {grantee}: {result}"
 
 @mcp.tool()
-async def PostgreSQL_create_index(index_name: str, table_name: str, columns: str, ctx: Context, schema_name: str = "public", unique: bool = False, method: str = "btree") -> str:
+async def PostgreSQL_create_index(index_name: str, table_name: str, columns: str, ctx: Context, schema_name: str = "public", unique: bool = False, method: str = "btree"):
     """Create an index on a table.
     
     Args:
@@ -1359,7 +1359,7 @@ async def PostgreSQL_create_index(index_name: str, table_name: str, columns: str
     return f"Successfully created {'unique ' if unique else ''}index {index_name} on {full_table_name}: {result}"
 
 @mcp.tool()
-async def PostgreSQL_drop_index(index_name: str, ctx: Context, schema_name: str = "public", cascade: bool = False) -> str:
+async def PostgreSQL_drop_index(index_name: str, ctx: Context, schema_name: str = "public", cascade: bool = False):
     """Drop an index.
     
     Args:
@@ -1380,7 +1380,7 @@ async def PostgreSQL_drop_index(index_name: str, ctx: Context, schema_name: str 
     return f"Successfully dropped index {full_index_name}: {result}"
 
 @mcp.tool()
-async def PostgreSQL_explain_query(query: str, analyze: bool = False) -> List[Dict[str, Any]]:
+async def PostgreSQL_explain_query(query: str, analyze: bool = False):
     """Run EXPLAIN on a query to show the execution plan.
     
     Args:
@@ -1398,7 +1398,7 @@ async def PostgreSQL_explain_query(query: str, analyze: bool = False) -> List[Di
     return rows
 
 @mcp.tool()
-async def PostgreSQL_reset_sequence(sequence_name: str, ctx: Context, schema_name: str = "public", restart_value: Optional[int] = None) -> str:
+async def PostgreSQL_reset_sequence(sequence_name: str, ctx: Context, schema_name: str = "public", restart_value: Optional[int] = None):
     """Reset a sequence to a specific value or restart from 1.
     
     Args:
@@ -1419,7 +1419,7 @@ async def PostgreSQL_reset_sequence(sequence_name: str, ctx: Context, schema_nam
     return f"Successfully reset sequence {full_sequence_name} to {restart_val}: {result}"
 
 @mcp.tool()
-async def PostgreSQL_get_replication_status() -> List[Dict[str, Any]]:
+async def PostgreSQL_get_replication_status():
     """Get information about PostgreSQL replication status."""
     query = """
         SELECT 
@@ -1450,7 +1450,7 @@ async def PostgreSQL_get_replication_status() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_locks_info() -> List[Dict[str, Any]]:
+async def PostgreSQL_get_locks_info():
     """Get information about current database locks."""
     query = """
         SELECT 
@@ -1475,7 +1475,7 @@ async def PostgreSQL_get_locks_info() -> List[Dict[str, Any]]:
 # Additional PostgreSQL Administrative Tools
 
 @mcp.tool()
-async def PostgreSQL_get_table_statistics() -> List[Dict[str, Any]]:
+async def PostgreSQL_get_table_statistics():
     """Get comprehensive statistics for all user tables."""
     query = """
         SELECT 
@@ -1503,7 +1503,7 @@ async def PostgreSQL_get_table_statistics() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_index_usage() -> List[Dict[str, Any]]:
+async def PostgreSQL_get_index_usage():
     """Get index usage statistics to identify unused indexes."""
     query = """
         SELECT 
@@ -1522,7 +1522,7 @@ async def PostgreSQL_get_index_usage() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_kill_connection(pid: int, ctx: Context) -> str:
+async def PostgreSQL_kill_connection(pid: int, ctx: Context):
     """Terminate a specific database connection by PID.
     
     Args:
@@ -1548,7 +1548,7 @@ async def PostgreSQL_kill_connection(pid: int, ctx: Context) -> str:
         return f"Failed to terminate connection PID {pid}"
 
 @mcp.tool()
-async def PostgreSQL_get_slow_queries(min_duration_ms: int = 1000) -> List[Dict[str, Any]]:
+async def PostgreSQL_get_slow_queries(min_duration_ms: int = 1000):
     """Get slow queries from pg_stat_statements (if available).
     
     Args:
@@ -1586,7 +1586,7 @@ async def PostgreSQL_get_slow_queries(min_duration_ms: int = 1000) -> List[Dict[
         return [{"error": f"Error retrieving slow queries: {str(e)}"}]
 
 @mcp.tool()
-async def PostgreSQL_get_cache_hit_ratio() -> List[Dict[str, Any]]:
+async def PostgreSQL_get_cache_hit_ratio():
     """Get cache hit ratios for tables and indexes."""
     query = """
         SELECT 
@@ -1608,7 +1608,7 @@ async def PostgreSQL_get_cache_hit_ratio() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_checkpoint_stats() -> Dict[str, Any]:
+async def PostgreSQL_get_checkpoint_stats():
     """Get checkpoint and background writer statistics."""
     query = """
         SELECT 
@@ -1630,7 +1630,7 @@ async def PostgreSQL_get_checkpoint_stats() -> Dict[str, Any]:
     return rows[0] if rows else {}
 
 @mcp.tool()
-async def PostgreSQL_get_wal_stats() -> Dict[str, Any]:
+async def PostgreSQL_get_wal_stats():
     """Get Write-Ahead Log (WAL) statistics and status."""
     query = """
         SELECT 
@@ -1646,7 +1646,7 @@ async def PostgreSQL_get_wal_stats() -> Dict[str, Any]:
     return rows[0] if rows else {}
 
 @mcp.tool()
-async def PostgreSQL_create_user(username: str, password: str, ctx: Context, can_login: bool = True, is_superuser: bool = False, can_create_db: bool = False) -> str:
+async def PostgreSQL_create_user(username: str, password: str, ctx: Context, can_login: bool = True, is_superuser: bool = False, can_create_db: bool = False):
     """Create a new database user/role.
     
     Args:
@@ -1673,7 +1673,7 @@ async def PostgreSQL_create_user(username: str, password: str, ctx: Context, can
         options.append("NOCREATEDB")
     
     options_str = " ".join(options)
-    create_user_query = f"CREATE USER {username} WITH {options_str} PASSWORD %s"
+    create_user_query = f"CREATE USER {username} WITH {options_str} PASSWORD $1"
     
     await ctx.warning(f"Creating user '{username}' with options: {options_str}")
     
@@ -1683,7 +1683,7 @@ async def PostgreSQL_create_user(username: str, password: str, ctx: Context, can
     return f"Successfully created user '{username}': {result}"
 
 @mcp.tool()
-async def PostgreSQL_drop_user(username: str, ctx: Context) -> str:
+async def PostgreSQL_drop_user(username: str, ctx: Context):
     """Drop a database user/role.
     
     Args:
@@ -1699,7 +1699,7 @@ async def PostgreSQL_drop_user(username: str, ctx: Context) -> str:
     return f"Successfully dropped user '{username}': {result}"
 
 @mcp.tool()
-async def PostgreSQL_get_bloated_tables(bloat_threshold: float = 20.0) -> List[Dict[str, Any]]:
+async def PostgreSQL_get_bloated_tables(bloat_threshold: float = 20.0):
     """Find tables with significant bloat that may need maintenance.
     
     Args:
@@ -1724,7 +1724,7 @@ async def PostgreSQL_get_bloated_tables(bloat_threshold: float = 20.0) -> List[D
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_unused_indexes(scan_threshold: int = 0) -> List[Dict[str, Any]]:
+async def PostgreSQL_get_unused_indexes(scan_threshold: int = 0):
     """Find indexes that are rarely or never used.
     
     Args:
@@ -1747,7 +1747,7 @@ async def PostgreSQL_get_unused_indexes(scan_threshold: int = 0) -> List[Dict[st
     return rows
 
 @mcp.tool()
-async def PostgreSQL_analyze_database(ctx: Context) -> str:
+async def PostgreSQL_analyze_database(ctx: Context):
     """Run ANALYZE on the entire database to update statistics."""
     await ctx.info("Running ANALYZE on entire database...")
     
@@ -1758,7 +1758,7 @@ async def PostgreSQL_analyze_database(ctx: Context) -> str:
     return f"Successfully analyzed entire database: {result}"
 
 @mcp.tool()
-async def PostgreSQL_get_extension_list() -> List[Dict[str, Any]]:
+async def PostgreSQL_get_extension_list():
     """List all installed PostgreSQL extensions."""
     query = """
         SELECT 
@@ -1776,7 +1776,7 @@ async def PostgreSQL_get_extension_list() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_create_schema(schema_name: str, ctx: Context, owner: Optional[str] = None) -> str:
+async def PostgreSQL_create_schema(schema_name: str, ctx: Context, owner: Optional[str] = None):
     """Create a new database schema.
     
     Args:
@@ -1796,7 +1796,7 @@ async def PostgreSQL_create_schema(schema_name: str, ctx: Context, owner: Option
     return f"Successfully created schema '{schema_name}': {result}"
 
 @mcp.tool()
-async def PostgreSQL_drop_schema(schema_name: str, ctx: Context, cascade: bool = False) -> str:
+async def PostgreSQL_drop_schema(schema_name: str, ctx: Context, cascade: bool = False):
     """Drop a database schema.
     
     Args:
@@ -1814,7 +1814,7 @@ async def PostgreSQL_drop_schema(schema_name: str, ctx: Context, cascade: bool =
     return f"Successfully dropped schema '{schema_name}': {result}"
 
 @mcp.tool()
-async def PostgreSQL_get_foreign_keys(table_name: str, schema_name: str = "public") -> List[Dict[str, Any]]:
+async def PostgreSQL_get_foreign_keys(table_name: str, schema_name: str = "public"):
     """Get all foreign key relationships for a table (both referencing and referenced).
     
     Args:
@@ -1881,7 +1881,7 @@ async def PostgreSQL_get_foreign_keys(table_name: str, schema_name: str = "publi
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_materialized_views(schema_name: str = "public") -> List[Dict[str, Any]]:
+async def PostgreSQL_get_materialized_views(schema_name: str = "public"):
     """List all materialized views in a schema.
     
     Args:
@@ -1905,7 +1905,7 @@ async def PostgreSQL_get_materialized_views(schema_name: str = "public") -> List
     return rows
 
 @mcp.tool()
-async def PostgreSQL_refresh_materialized_view(view_name: str, ctx: Context, schema_name: str = "public", concurrently: bool = False) -> str:
+async def PostgreSQL_refresh_materialized_view(view_name: str, ctx: Context, schema_name: str = "public", concurrently: bool = False):
     """Refresh a materialized view.
     
     Args:
@@ -1926,7 +1926,7 @@ async def PostgreSQL_refresh_materialized_view(view_name: str, ctx: Context, sch
     return f"Successfully refreshed materialized view {full_view_name}: {result}"
 
 @mcp.tool()
-async def PostgreSQL_get_connection_limits() -> Dict[str, Any]:
+async def PostgreSQL_get_connection_limits():
     """Get information about connection limits and current usage."""
     query = """
         SELECT 
@@ -1950,7 +1950,7 @@ async def PostgreSQL_get_connection_limits() -> Dict[str, Any]:
 # Additional 20 Advanced PostgreSQL Tools
 
 @mcp.tool()
-async def PostgreSQL_analyze_index_bloat(threshold: float = 30.0) -> List[Dict[str, Any]]:
+async def PostgreSQL_analyze_index_bloat(threshold: float = 30.0):
     """
     Identify indexes with significant bloat above a threshold percentage.
     
@@ -1984,7 +1984,7 @@ async def PostgreSQL_analyze_index_bloat(threshold: float = 30.0) -> List[Dict[s
 
 
 @mcp.tool()
-async def PostgreSQL_detect_conflicting_queries(min_locks: int = 2) -> List[Dict[str, Any]]:
+async def PostgreSQL_detect_conflicting_queries(min_locks: int = 2):
     """
     Detect queries that hold locks conflicting with multiple other queries.
     
@@ -2020,7 +2020,7 @@ async def PostgreSQL_detect_conflicting_queries(min_locks: int = 2) -> List[Dict
 
 
 @mcp.tool()
-async def PostgreSQL_table_io_patterns(limit: int = 50) -> List[Dict[str, Any]]:
+async def PostgreSQL_table_io_patterns(limit: int = 50):
     """
     Analyze table I/O patterns for sequential vs index scans.
     
@@ -2046,7 +2046,7 @@ async def PostgreSQL_table_io_patterns(limit: int = 50) -> List[Dict[str, Any]]:
 
 
 @mcp.tool()
-async def PostgreSQL_longest_idle_transactions(min_idle_seconds: int = 300) -> List[Dict[str, Any]]:
+async def PostgreSQL_longest_idle_transactions(min_idle_seconds: int = 300):
     """
     Find transactions idle in transaction state longer than a threshold.
     
@@ -2066,7 +2066,7 @@ async def PostgreSQL_longest_idle_transactions(min_idle_seconds: int = 300) -> L
 
 
 @mcp.tool()
-async def PostgreSQL_index_redundancy_detection() -> List[Dict[str, Any]]:
+async def PostgreSQL_index_redundancy_detection():
     """
     Identify potentially redundant or overlapping indexes for tables.
     """
@@ -2109,7 +2109,7 @@ async def PostgreSQL_index_redundancy_detection() -> List[Dict[str, Any]]:
 
 
 @mcp.tool()
-async def PostgreSQL_high_io_tables(min_calls: int = 1000) -> List[Dict[str, Any]]:
+async def PostgreSQL_high_io_tables(min_calls: int = 1000):
     """
     Detect tables with high I/O operations based on statistics.
     
@@ -2135,7 +2135,7 @@ async def PostgreSQL_high_io_tables(min_calls: int = 1000) -> List[Dict[str, Any
 
 
 @mcp.tool()
-async def PostgreSQL_foreign_key_conflicts(limit: int = 50) -> List[Dict[str, Any]]:
+async def PostgreSQL_foreign_key_conflicts(limit: int = 50):
     """
     Analyze foreign key constraints that could cause lock conflicts.
     
@@ -2160,7 +2160,7 @@ async def PostgreSQL_foreign_key_conflicts(limit: int = 50) -> List[Dict[str, An
 
 
 @mcp.tool()
-async def PostgreSQL_active_temp_file_users(min_temp_bytes: int = 100000000) -> List[Dict[str, Any]]:
+async def PostgreSQL_active_temp_file_users(min_temp_bytes: int = 100000000):
     """
     List active databases with significant temporary file usage indicating memory pressure.
     
@@ -2182,7 +2182,7 @@ async def PostgreSQL_active_temp_file_users(min_temp_bytes: int = 100000000) -> 
 
 
 @mcp.tool()
-async def PostgreSQL_logical_replication_slot_lag() -> List[Dict[str, Any]]:
+async def PostgreSQL_logical_replication_slot_lag():
     """
     List logical replication slots with current lag in bytes and status.
     """
@@ -2207,7 +2207,7 @@ async def PostgreSQL_logical_replication_slot_lag() -> List[Dict[str, Any]]:
 
 
 @mcp.tool()
-async def PostgreSQL_list_roles_with_superuser(rights_only: bool = False) -> List[Dict[str, Any]]:
+async def PostgreSQL_list_roles_with_superuser(rights_only: bool = False):
     """
     List database roles, optionally showing only superusers.
     
@@ -2233,7 +2233,7 @@ async def PostgreSQL_list_roles_with_superuser(rights_only: bool = False) -> Lis
 
 
 @mcp.tool()
-async def PostgreSQL_predicate_lock_analysis() -> List[Dict[str, Any]]:
+async def PostgreSQL_predicate_lock_analysis():
     """
     Analyze predicate locks that may lead to serialization failures or contention.
     """
@@ -2256,7 +2256,7 @@ async def PostgreSQL_predicate_lock_analysis() -> List[Dict[str, Any]]:
 
 
 @mcp.tool()
-async def PostgreSQL_get_high_wait_events() -> List[Dict[str, Any]]:
+async def PostgreSQL_get_high_wait_events():
     """
     Get wait events with the highest average wait times.
     """
@@ -2277,7 +2277,7 @@ async def PostgreSQL_get_high_wait_events() -> List[Dict[str, Any]]:
 
 
 @mcp.tool()
-async def PostgreSQL_get_vacuum_inefficiency_tables(min_dead_ratio: float = 10.0) -> List[Dict[str, Any]]:
+async def PostgreSQL_get_vacuum_inefficiency_tables(min_dead_ratio: float = 10.0):
     """
     Detect tables with inefficient vacuuming based on dead tuple ratio.
     
@@ -2302,7 +2302,7 @@ async def PostgreSQL_get_vacuum_inefficiency_tables(min_dead_ratio: float = 10.0
 
 
 @mcp.tool()
-async def PostgreSQL_verify_table_column_compression(table_name: str, schema_name: str = "public") -> List[Dict[str, Any]]:
+async def PostgreSQL_verify_table_column_compression(table_name: str, schema_name: str = "public"):
     """
     Verify compression methods applied to table columns (if supported).
     
@@ -2325,7 +2325,7 @@ async def PostgreSQL_verify_table_column_compression(table_name: str, schema_nam
 
 
 @mcp.tool()
-async def PostgreSQL_detect_index_lock_waits() -> List[Dict[str, Any]]:
+async def PostgreSQL_detect_index_lock_waits():
     """
     Detect locking waits specifically on indexes.
     """
@@ -2358,7 +2358,7 @@ async def PostgreSQL_detect_index_lock_waits() -> List[Dict[str, Any]]:
 
 
 @mcp.tool()
-async def PostgreSQL_analyze_table_freeze_stats() -> List[Dict[str, Any]]:
+async def PostgreSQL_analyze_table_freeze_stats():
     """
     Analyze XID freeze stats to detect tables nearing transaction wraparound risks.
     """
@@ -2385,7 +2385,7 @@ async def PostgreSQL_analyze_table_freeze_stats() -> List[Dict[str, Any]]:
 
 
 @mcp.tool()
-async def PostgreSQL_check_blocking_queries() -> List[Dict[str, Any]]:
+async def PostgreSQL_check_blocking_queries():
     """
     Get currently blocking and blocked queries with detailed info.
     """
@@ -2426,7 +2426,7 @@ async def PostgreSQL_check_blocking_queries() -> List[Dict[str, Any]]:
 # Additional 20 Basic PostgreSQL Tools
 
 @mcp.tool()
-async def PostgreSQL_get_database_config() -> List[Dict[str, Any]]:
+async def PostgreSQL_get_database_config():
     """Get important database configuration parameters."""
     query = """
         SELECT 
@@ -2456,7 +2456,7 @@ async def PostgreSQL_get_database_config() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_all_constraints() -> List[Dict[str, Any]]:
+async def PostgreSQL_get_all_constraints():
     """Get all table constraints (CHECK, UNIQUE, PRIMARY KEY, FOREIGN KEY)."""
     query = """
         SELECT 
@@ -2496,7 +2496,7 @@ async def PostgreSQL_get_all_constraints() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_sequences() -> List[Dict[str, Any]]:
+async def PostgreSQL_get_sequences():
     """Get all sequences in the database with their current values."""
     query = """
         SELECT 
@@ -2519,7 +2519,7 @@ async def PostgreSQL_get_sequences() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_triggers() -> List[Dict[str, Any]]:
+async def PostgreSQL_get_triggers():
     """Get all triggers in the database."""
     query = """
         SELECT 
@@ -2554,7 +2554,7 @@ async def PostgreSQL_get_triggers() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_functions() -> List[Dict[str, Any]]:
+async def PostgreSQL_get_functions():
     """Get all user-defined functions in the database."""
     query = """
         SELECT 
@@ -2583,7 +2583,7 @@ async def PostgreSQL_get_functions() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_table_inheritance() -> List[Dict[str, Any]]:
+async def PostgreSQL_get_table_inheritance():
     """Get table inheritance relationships."""
     query = """
         SELECT 
@@ -2604,7 +2604,7 @@ async def PostgreSQL_get_table_inheritance() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_temp_files() -> List[Dict[str, Any]]:
+async def PostgreSQL_get_temp_files():
     """Get information about temporary files usage by queries."""
     query = """
         SELECT 
@@ -2622,7 +2622,7 @@ async def PostgreSQL_get_temp_files() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_autovacuum_settings() -> List[Dict[str, Any]]:
+async def PostgreSQL_get_autovacuum_settings():
     """Get autovacuum settings for all tables."""
     query = """
         SELECT 
@@ -2678,7 +2678,7 @@ async def PostgreSQL_get_autovacuum_settings() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_partitioned_tables() -> List[Dict[str, Any]]:
+async def PostgreSQL_get_partitioned_tables():
     """Get information about partitioned tables and their partitions."""
     query = """
         SELECT 
@@ -2705,7 +2705,7 @@ async def PostgreSQL_get_partitioned_tables() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_wait_events() -> List[Dict[str, Any]]:
+async def PostgreSQL_get_wait_events():
     """Get current wait events from active sessions."""
     query = """
         SELECT 
@@ -2725,7 +2725,7 @@ async def PostgreSQL_get_wait_events() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_replication_slots() -> List[Dict[str, Any]]:
+async def PostgreSQL_get_replication_slots():
     """Get information about replication slots."""
     query = """
         SELECT 
@@ -2751,7 +2751,7 @@ async def PostgreSQL_get_replication_slots() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_event_triggers() -> List[Dict[str, Any]]:
+async def PostgreSQL_get_event_triggers():
     """Get all event triggers in the database."""
     query = """
         SELECT 
@@ -2769,7 +2769,7 @@ async def PostgreSQL_get_event_triggers() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_publication_tables() -> List[Dict[str, Any]]:
+async def PostgreSQL_get_publication_tables():
     """Get tables included in logical replication publications."""
     query = """
         SELECT 
@@ -2793,7 +2793,7 @@ async def PostgreSQL_get_publication_tables() -> List[Dict[str, Any]]:
 # Advanced PostgreSQL Analysis Tools - 20 New Tools
 
 @mcp.tool()
-async def PostgreSQL_analyze_query_complexity(min_cost: float = 1000.0) -> List[Dict[str, Any]]:
+async def PostgreSQL_analyze_query_complexity(min_cost: float = 1000.0):
     """Analyze query complexity by examining execution plans and costs.
     
     Args:
@@ -2838,7 +2838,7 @@ async def PostgreSQL_analyze_query_complexity(min_cost: float = 1000.0) -> List[
         return [{"error": f"pg_stat_statements not available or error: {str(e)}"}]
 
 @mcp.tool()
-async def PostgreSQL_detect_foreign_key_lock_contention() -> List[Dict[str, Any]]:
+async def PostgreSQL_detect_foreign_key_lock_contention():
     """Detect potential foreign key lock contention and blocking scenarios."""
     query = """
         WITH lock_conflicts AS (
@@ -2885,7 +2885,7 @@ async def PostgreSQL_detect_foreign_key_lock_contention() -> List[Dict[str, Any]
     return rows
 
 @mcp.tool()
-async def PostgreSQL_diagnose_logical_replication_lag() -> List[Dict[str, Any]]:
+async def PostgreSQL_diagnose_logical_replication_lag():
     """Diagnose logical replication lag and identify bottlenecks."""
     query = """
         WITH replication_metrics AS (
@@ -2939,7 +2939,7 @@ async def PostgreSQL_diagnose_logical_replication_lag() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_analyze_autovacuum_efficiency() -> List[Dict[str, Any]]:
+async def PostgreSQL_analyze_autovacuum_efficiency():
     """Analyze autovacuum efficiency and provide tuning recommendations."""
     query = """
         WITH table_stats AS (
@@ -2995,7 +2995,7 @@ async def PostgreSQL_analyze_autovacuum_efficiency() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_detect_transaction_wraparound_risk() -> Dict[str, Any]:
+async def PostgreSQL_detect_transaction_wraparound_risk():
     """Detect transaction ID wraparound risks and provide early warning."""
     query = """
         WITH xid_info AS (
@@ -3088,7 +3088,7 @@ async def PostgreSQL_detect_transaction_wraparound_risk() -> Dict[str, Any]:
     return result
 
 @mcp.tool()
-async def PostgreSQL_analyze_advanced_buffer_usage() -> List[Dict[str, Any]]:
+async def PostgreSQL_analyze_advanced_buffer_usage():
     """Analyze advanced buffer cache utilization patterns and efficiency."""
     query = """
         WITH buffer_stats AS (
@@ -3156,7 +3156,7 @@ async def PostgreSQL_analyze_advanced_buffer_usage() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_predict_sequence_exhaustion() -> List[Dict[str, Any]]:
+async def PostgreSQL_predict_sequence_exhaustion():
     """Predict sequence exhaustion based on usage patterns and growth trends."""
     query = """
         WITH sequence_analysis AS (
@@ -3246,7 +3246,7 @@ async def PostgreSQL_predict_sequence_exhaustion() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_identify_index_redundancy() -> List[Dict[str, Any]]:
+async def PostgreSQL_identify_index_redundancy():
     """Identify potentially redundant or overlapping indexes."""
     query = """
         WITH index_info AS (
@@ -3339,7 +3339,7 @@ async def PostgreSQL_identify_index_redundancy() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_assess_trigger_performance_impact() -> List[Dict[str, Any]]:
+async def PostgreSQL_assess_trigger_performance_impact():
     """Assess the performance impact of triggers on table operations."""
     query = """
         WITH trigger_info AS (
@@ -3433,7 +3433,7 @@ async def PostgreSQL_assess_trigger_performance_impact() -> List[Dict[str, Any]]
     return rows
 
 @mcp.tool()
-async def PostgreSQL_analyze_connection_pool_efficiency() -> Dict[str, Any]:
+async def PostgreSQL_analyze_connection_pool_efficiency():
     """Analyze connection pool efficiency and usage patterns."""
     query = """
         WITH connection_stats AS (
@@ -3541,7 +3541,7 @@ async def PostgreSQL_analyze_connection_pool_efficiency() -> Dict[str, Any]:
     return result
 
 @mcp.tool()
-async def PostgreSQL_detect_table_bloat_regression() -> List[Dict[str, Any]]:
+async def PostgreSQL_detect_table_bloat_regression():
     """Detect table bloat regression patterns over time and predict maintenance needs."""
     query = """
         WITH current_bloat AS (
@@ -3654,7 +3654,7 @@ async def PostgreSQL_detect_table_bloat_regression() -> List[Dict[str, Any]]:
 # ===== NEW ADVANCED POSTGRESQL TOOLS =====
 
 @mcp.tool()
-async def PostgreSQL_vacuum_freeze_age_analysis() -> List[Dict[str, Any]]:
+async def PostgreSQL_vacuum_freeze_age_analysis():
     """Identify tables and databases approaching XID wraparound vacuum freeze threshold."""
     query = """
         WITH freeze_analysis AS (
@@ -3725,7 +3725,7 @@ async def PostgreSQL_vacuum_freeze_age_analysis() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_replication_slot_activity_analysis() -> List[Dict[str, Any]]:
+async def PostgreSQL_replication_slot_activity_analysis():
     """Detailed analysis of logical and physical replication slots with lag statistics."""
     query = """
         WITH slot_analysis AS (
@@ -3808,7 +3808,7 @@ async def PostgreSQL_replication_slot_activity_analysis() -> List[Dict[str, Any]
     return rows
 
 @mcp.tool()
-async def PostgreSQL_long_running_prepared_transactions() -> List[Dict[str, Any]]:
+async def PostgreSQL_long_running_prepared_transactions():
     """List prepared transactions sorted by duration with detailed analysis."""
     query = """
         WITH prepared_tx_analysis AS (
@@ -3868,7 +3868,7 @@ async def PostgreSQL_long_running_prepared_transactions() -> List[Dict[str, Any]
     return rows
 
 @mcp.tool()
-async def PostgreSQL_vacuum_progress_monitoring() -> List[Dict[str, Any]]:
+async def PostgreSQL_vacuum_progress_monitoring():
     """Monitor active vacuum operations and their performance impact."""
     query = """
         WITH vacuum_progress AS (
@@ -3956,7 +3956,7 @@ async def PostgreSQL_vacuum_progress_monitoring() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_buffer_cache_relation_analysis() -> List[Dict[str, Any]]:
+async def PostgreSQL_buffer_cache_relation_analysis():
     """Analyze buffer cache distribution per relation with detailed breakdown."""
     query = """
         WITH buffer_cache_stats AS (
@@ -4051,7 +4051,7 @@ async def PostgreSQL_buffer_cache_relation_analysis() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_column_statistics() -> List[Dict[str, Any]]:
+async def PostgreSQL_get_column_statistics():
     """Get statistics information for table columns."""
     query = """
         SELECT 
@@ -4073,7 +4073,7 @@ async def PostgreSQL_get_column_statistics() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_toast_tables() -> List[Dict[str, Any]]:
+async def PostgreSQL_get_toast_tables():
     """Get information about TOAST tables and their usage."""
     query = """
         SELECT 
@@ -4100,7 +4100,7 @@ async def PostgreSQL_get_toast_tables() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_foreign_tables() -> List[Dict[str, Any]]:
+async def PostgreSQL_get_foreign_tables():
     """Get information about foreign tables and foreign data wrappers."""
     query = """
         SELECT 
@@ -4122,7 +4122,7 @@ async def PostgreSQL_get_foreign_tables() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_checkpoint_info() -> Dict[str, Any]:
+async def PostgreSQL_get_checkpoint_info():
     """Get checkpoint timing and performance information."""
     query = """
         SELECT 
@@ -4148,7 +4148,7 @@ async def PostgreSQL_get_checkpoint_info() -> Dict[str, Any]:
     return rows[0] if rows else {}
 
 @mcp.tool()
-async def PostgreSQL_get_query_plans(limit: int = 10) -> List[Dict[str, Any]]:
+async def PostgreSQL_get_query_plans(limit: int = 10):
     """Get query execution plans from pg_stat_statements (if available).
     
     Args:
@@ -4176,7 +4176,7 @@ async def PostgreSQL_get_query_plans(limit: int = 10) -> List[Dict[str, Any]]:
         return [{"error": "pg_stat_statements extension not available or enabled"}]
 
 @mcp.tool()
-async def PostgreSQL_get_subscription_info() -> List[Dict[str, Any]]:
+async def PostgreSQL_get_subscription_info():
     """Get logical replication subscription information."""
     query = """
         SELECT 
@@ -4197,7 +4197,7 @@ async def PostgreSQL_get_subscription_info() -> List[Dict[str, Any]]:
 # 20 Additional PostgreSQL Tools
 
 @mcp.tool()
-async def PostgreSQL_list_extensions() -> List[Dict[str, Any]]:
+async def PostgreSQL_list_extensions():
     """List all available PostgreSQL extensions (installed and available)."""
     query = """
         SELECT 
@@ -4214,7 +4214,7 @@ async def PostgreSQL_list_extensions() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_tablespace_usage() -> List[Dict[str, Any]]:
+async def PostgreSQL_get_tablespace_usage():
     """Get tablespace usage statistics and disk space information."""
     query = """
         SELECT 
@@ -4237,7 +4237,7 @@ async def PostgreSQL_get_tablespace_usage() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_database_size_by_tablespace() -> List[Dict[str, Any]]:
+async def PostgreSQL_get_database_size_by_tablespace():
     """Get database size breakdown by tablespace."""
     query = """
         SELECT 
@@ -4267,7 +4267,7 @@ async def PostgreSQL_get_database_size_by_tablespace() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_list_roles_with_login() -> List[Dict[str, Any]]:
+async def PostgreSQL_list_roles_with_login():
     """List all database roles with their login capabilities and attributes."""
     query = """
         SELECT 
@@ -4294,7 +4294,7 @@ async def PostgreSQL_list_roles_with_login() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_lock_waits() -> List[Dict[str, Any]]:
+async def PostgreSQL_get_lock_waits():
     """Get detailed information about current lock waits and blocking sessions."""
     query = """
         SELECT 
@@ -4332,7 +4332,7 @@ async def PostgreSQL_get_lock_waits() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_list_foreign_tables_detailed() -> List[Dict[str, Any]]:
+async def PostgreSQL_list_foreign_tables_detailed():
     """Get detailed information about foreign tables and their servers."""
     query = """
         SELECT 
@@ -4357,7 +4357,7 @@ async def PostgreSQL_list_foreign_tables_detailed() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_list_event_triggers_detailed() -> List[Dict[str, Any]]:
+async def PostgreSQL_list_event_triggers_detailed():
     """Get detailed information about event triggers including their definitions."""
     query = """
         SELECT 
@@ -4380,7 +4380,7 @@ async def PostgreSQL_list_event_triggers_detailed() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_publications() -> List[Dict[str, Any]]:
+async def PostgreSQL_get_publications():
     """Get information about logical replication publications."""
     query = """
         SELECT 
@@ -4404,7 +4404,7 @@ async def PostgreSQL_get_publications() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_text_search_configs() -> List[Dict[str, Any]]:
+async def PostgreSQL_get_text_search_configs():
     """Get full-text search configurations available in the database."""
     query = """
         SELECT 
@@ -4424,7 +4424,7 @@ async def PostgreSQL_get_text_search_configs() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_autovacuum_activity() -> List[Dict[str, Any]]:
+async def PostgreSQL_get_autovacuum_activity():
     """Get statistics on autovacuum operations and activity."""
     query = """
         SELECT 
@@ -4455,7 +4455,7 @@ async def PostgreSQL_get_autovacuum_activity() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_list_foreign_key_references(table_name: str, schema_name: str = "public") -> List[Dict[str, Any]]:
+async def PostgreSQL_list_foreign_key_references(table_name: str, schema_name: str = "public"):
     """List all tables that reference the specified table via foreign keys."""
     query = """
         SELECT DISTINCT
@@ -4485,7 +4485,7 @@ async def PostgreSQL_list_foreign_key_references(table_name: str, schema_name: s
     return rows
 
 @mcp.tool()
-async def PostgreSQL_list_table_rules() -> List[Dict[str, Any]]:
+async def PostgreSQL_list_table_rules():
     """List all rules defined on tables in the database."""
     query = """
         SELECT 
@@ -4513,7 +4513,7 @@ async def PostgreSQL_list_table_rules() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_partition_info_detailed() -> List[Dict[str, Any]]:
+async def PostgreSQL_get_partition_info_detailed():
     """Get detailed information about partitioned tables and their partition strategies."""
     query = """
         SELECT 
@@ -4554,7 +4554,7 @@ async def PostgreSQL_get_partition_info_detailed() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_replication_slot_details() -> List[Dict[str, Any]]:
+async def PostgreSQL_get_replication_slot_details():
     """Get detailed replication slot information including lag and usage."""
     query = """
         SELECT 
@@ -4591,7 +4591,7 @@ async def PostgreSQL_get_replication_slot_details() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_backup_status() -> Dict[str, Any]:
+async def PostgreSQL_get_backup_status():
     """Get the last known backup status and WAL archiving information."""
     query = """
         SELECT 
@@ -4614,7 +4614,7 @@ async def PostgreSQL_get_backup_status() -> Dict[str, Any]:
     return rows[0] if rows else {}
 
 @mcp.tool()
-async def PostgreSQL_get_slow_query_statements(min_calls: int = 10) -> List[Dict[str, Any]]:
+async def PostgreSQL_get_slow_query_statements(min_calls: int = 10):
     """Get slow queries from pg_stat_statements with additional performance metrics."""
     check_ext_query = "SELECT 1 FROM pg_extension WHERE extname = 'pg_stat_statements'"
     
@@ -4660,7 +4660,7 @@ async def PostgreSQL_get_slow_query_statements(min_calls: int = 10) -> List[Dict
         return [{"error": f"Error retrieving slow queries: {str(e)}"}]
 
 @mcp.tool()
-async def PostgreSQL_get_active_transactions() -> List[Dict[str, Any]]:
+async def PostgreSQL_get_active_transactions():
     """Get information about currently active transactions."""
     query = """
         SELECT 
@@ -4690,7 +4690,7 @@ async def PostgreSQL_get_active_transactions() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_column_privileges(table_name: str, schema_name: str = "public") -> List[Dict[str, Any]]:
+async def PostgreSQL_get_column_privileges(table_name: str, schema_name: str = "public"):
     """Get column-level privileges on a specific table."""
     query = """
         SELECT 
@@ -4708,7 +4708,7 @@ async def PostgreSQL_get_column_privileges(table_name: str, schema_name: str = "
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_wal_archiving_settings() -> Dict[str, Any]:
+async def PostgreSQL_get_wal_archiving_settings():
     """Get comprehensive WAL (Write Ahead Log) archiving configuration and status."""
     query = """
         SELECT 
@@ -4733,7 +4733,7 @@ async def PostgreSQL_get_wal_archiving_settings() -> Dict[str, Any]:
     return rows[0] if rows else {}
 
 @mcp.tool()
-async def PostgreSQL_get_index_usage_stats() -> List[Dict[str, Any]]:
+async def PostgreSQL_get_index_usage_stats():
     """Get comprehensive index usage statistics to identify unused or underutilized indexes."""
     query = """
         SELECT 
@@ -4760,7 +4760,7 @@ async def PostgreSQL_get_index_usage_stats() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_table_bloat_estimation() -> List[Dict[str, Any]]:
+async def PostgreSQL_get_table_bloat_estimation():
     """Estimate table bloat to identify tables that may need maintenance."""
     query = """
         SELECT 
@@ -4792,7 +4792,7 @@ async def PostgreSQL_get_table_bloat_estimation() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_lock_monitoring() -> List[Dict[str, Any]]:
+async def PostgreSQL_get_lock_monitoring():
     """Monitor current locks and potential blocking situations."""
     query = """
         SELECT 
@@ -4825,7 +4825,7 @@ async def PostgreSQL_get_lock_monitoring() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_connection_pool_stats() -> Dict[str, Any]:
+async def PostgreSQL_get_connection_pool_stats():
     """Get detailed connection and activity statistics."""
     query = """
         SELECT 
@@ -4847,7 +4847,7 @@ async def PostgreSQL_get_connection_pool_stats() -> Dict[str, Any]:
     return rows[0] if rows else {}
 
 @mcp.tool()
-async def PostgreSQL_get_cache_hit_ratios() -> Dict[str, Any]:
+async def PostgreSQL_get_cache_hit_ratios():
     """Calculate cache hit ratios for buffer and index performance analysis."""
     query = """
         SELECT 
@@ -4895,7 +4895,7 @@ async def PostgreSQL_get_cache_hit_ratios() -> Dict[str, Any]:
     return {row['metric']: row['percentage'] for row in rows}
 
 @mcp.tool()
-async def PostgreSQL_get_vacuum_analyze_recommendations() -> List[Dict[str, Any]]:
+async def PostgreSQL_get_vacuum_analyze_recommendations():
     """Get recommendations for tables that may need vacuum or analyze operations."""
     query = """
         SELECT 
@@ -4929,7 +4929,7 @@ async def PostgreSQL_get_vacuum_analyze_recommendations() -> List[Dict[str, Any]
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_blocking_locks() -> List[Dict[str, Any]]:
+async def PostgreSQL_get_blocking_locks():
     """Identify blocking and blocked queries with detailed lock information."""
     query = """
         SELECT 
@@ -4969,7 +4969,7 @@ async def PostgreSQL_get_blocking_locks() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_top_heavy_queries() -> List[Dict[str, Any]]:
+async def PostgreSQL_get_top_heavy_queries():
     """Get top queries by total time, calls, and mean time from pg_stat_statements."""
     query = """
         SELECT 
@@ -4992,7 +4992,7 @@ async def PostgreSQL_get_top_heavy_queries() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_table_size_summary() -> List[Dict[str, Any]]:
+async def PostgreSQL_get_table_size_summary():
     """Get comprehensive table size information including indexes and toast."""
     query = """
         SELECT 
@@ -5014,7 +5014,7 @@ async def PostgreSQL_get_table_size_summary() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_replication_stats() -> List[Dict[str, Any]]:
+async def PostgreSQL_get_replication_stats():
     """Get replication slot and standby server statistics."""
     query = """
         SELECT 
@@ -5060,7 +5060,7 @@ async def PostgreSQL_get_replication_stats() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_estimated_row_counts() -> List[Dict[str, Any]]:
+async def PostgreSQL_get_estimated_row_counts():
     """Get estimated row counts for all tables using statistics (faster than COUNT(*))."""
     query = """
         SELECT 
@@ -5085,7 +5085,7 @@ async def PostgreSQL_get_estimated_row_counts() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_long_running_transactions() -> List[Dict[str, Any]]:
+async def PostgreSQL_get_long_running_transactions():
     """Identify long-running transactions that may be holding locks or bloating tables."""
     query = """
         SELECT 
@@ -5116,7 +5116,7 @@ async def PostgreSQL_get_long_running_transactions() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_idle_connections() -> List[Dict[str, Any]]:
+async def PostgreSQL_get_idle_connections():
     """Find idle connections and idle-in-transaction sessions."""
     query = """
         SELECT 
@@ -5146,7 +5146,7 @@ async def PostgreSQL_get_idle_connections() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_important_settings() -> List[Dict[str, Any]]:
+async def PostgreSQL_get_important_settings():
     """Get important PostgreSQL configuration parameters and their current values."""
     query = """
         SELECT 
@@ -5182,7 +5182,7 @@ async def PostgreSQL_get_important_settings() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_table_io_stats() -> List[Dict[str, Any]]:
+async def PostgreSQL_get_table_io_stats():
     """Get I/O statistics for tables showing disk vs cache usage patterns."""
     query = """
         SELECT 
@@ -5208,7 +5208,7 @@ async def PostgreSQL_get_table_io_stats() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_role_attributes() -> List[Dict[str, Any]]:
+async def PostgreSQL_get_role_attributes():
     """Get detailed information about database roles and their attributes."""
     query = """
         SELECT 
@@ -5237,7 +5237,7 @@ async def PostgreSQL_get_role_attributes() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_temp_file_stats() -> Dict[str, Any]:
+async def PostgreSQL_get_temp_file_stats():
     """Get temporary file usage statistics indicating potential memory pressure."""
     query = """
         SELECT 
@@ -5255,7 +5255,7 @@ async def PostgreSQL_get_temp_file_stats() -> Dict[str, Any]:
     return rows[0] if rows else {}
 
 @mcp.tool()
-async def PostgreSQL_get_logical_replication_stats() -> List[Dict[str, Any]]:
+async def PostgreSQL_get_logical_replication_stats():
     """Get logical replication subscription and worker statistics."""
     query = """
         SELECT 
@@ -5281,7 +5281,7 @@ async def PostgreSQL_get_logical_replication_stats() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_memory_usage_stats() -> Dict[str, Any]:
+async def PostgreSQL_get_memory_usage_stats():
     """Get memory-related statistics and buffer pool information."""
     query = """
         WITH memory_stats AS (
@@ -5319,7 +5319,7 @@ async def PostgreSQL_get_memory_usage_stats() -> Dict[str, Any]:
     return rows[0] if rows else {}
 
 @mcp.tool()
-async def PostgreSQL_get_buffer_cache_contents() -> List[Dict[str, Any]]:
+async def PostgreSQL_get_buffer_cache_contents():
     """Analyze what's currently in the PostgreSQL buffer cache (requires pg_buffercache extension)."""
     query = """
         SELECT 
@@ -5343,7 +5343,7 @@ async def PostgreSQL_get_buffer_cache_contents() -> List[Dict[str, Any]]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_buffer_hit_ratios_detailed() -> List[Dict[str, Any]]:
+async def PostgreSQL_get_buffer_hit_ratios_detailed():
     """Get detailed buffer cache hit ratios by database and table."""
     query = """
         SELECT 
@@ -5374,7 +5374,7 @@ async def PostgreSQL_get_buffer_hit_ratios_detailed() -> List[Dict[str, Any]]:
 # Advanced PostgreSQL Diagnostic and Monitoring Tools
 
 @mcp.tool()
-async def analyze_query_plans() -> list[dict]:
+async def analyze_query_plans():
     """Analyze active query execution plans and their performance characteristics."""
     query = """
         SELECT 
@@ -5406,7 +5406,7 @@ async def analyze_query_plans() -> list[dict]:
     return rows
 
 @mcp.tool()
-async def check_constraint_violations() -> list[dict]:
+async def check_constraint_violations():
     """Check for potential constraint violations and data integrity issues."""
     query = """
         SELECT 
@@ -5442,7 +5442,7 @@ async def check_constraint_violations() -> list[dict]:
     return rows
 
 @mcp.tool()
-async def analyze_sequence_usage() -> list[dict]:
+async def analyze_sequence_usage():
     """Analyze sequence usage and predict when sequences might be exhausted."""
     query = """
         SELECT 
@@ -5474,7 +5474,7 @@ async def analyze_sequence_usage() -> list[dict]:
     return rows
 
 @mcp.tool()
-async def monitor_materialized_views() -> list[dict]:
+async def monitor_materialized_views():
     """Monitor materialized views status and freshness."""
     query = """
         SELECT 
@@ -5495,7 +5495,7 @@ async def monitor_materialized_views() -> list[dict]:
     return rows
 
 @mcp.tool()
-async def analyze_vacuum_efficiency() -> list[dict]:
+async def analyze_vacuum_efficiency():
     """Analyze vacuum efficiency and recommend vacuum strategies."""
     query = """
         SELECT 
@@ -5529,7 +5529,7 @@ async def analyze_vacuum_efficiency() -> list[dict]:
     return rows
 
 @mcp.tool()
-async def check_function_performance() -> list[dict]:
+async def check_function_performance():
     """Analyze stored function and procedure performance statistics."""
     query = """
         SELECT 
@@ -5556,7 +5556,7 @@ async def check_function_performance() -> list[dict]:
     return rows
 
 @mcp.tool()
-async def analyze_transaction_wraparound() -> list[dict]:
+async def analyze_transaction_wraparound():
     """Monitor transaction ID wraparound risks across databases."""
     query = """
         SELECT 
@@ -5579,7 +5579,7 @@ async def analyze_transaction_wraparound() -> list[dict]:
     return rows
 
 @mcp.tool()
-async def monitor_connection_patterns() -> list[dict]:
+async def monitor_connection_patterns():
     """Analyze connection patterns and identify potential connection issues."""
     query = """
         SELECT 
@@ -5607,7 +5607,7 @@ async def monitor_connection_patterns() -> list[dict]:
     return rows
 
 @mcp.tool()
-async def analyze_index_effectiveness() -> list[dict]:
+async def analyze_index_effectiveness():
     """Analyze index effectiveness and identify unused or redundant indexes."""
     query = """
         SELECT 
@@ -5636,7 +5636,7 @@ async def analyze_index_effectiveness() -> list[dict]:
     return rows
 
 @mcp.tool()
-async def check_replication_lag_details() -> list[dict]:
+async def check_replication_lag_details():
     """Detailed analysis of replication lag across all replicas."""
     query = """
         SELECT 
@@ -5666,7 +5666,7 @@ async def check_replication_lag_details() -> list[dict]:
     return rows
 
 @mcp.tool()
-async def analyze_buffer_utilization() -> list[dict]:
+async def analyze_buffer_utilization():
     """Analyze shared buffer utilization patterns by relation."""
     query = """
         SELECT 
@@ -5695,7 +5695,7 @@ async def analyze_buffer_utilization() -> list[dict]:
     return rows
 
 @mcp.tool()
-async def monitor_autovacuum_progress() -> list[dict]:
+async def monitor_autovacuum_progress():
     """Monitor currently running autovacuum operations and their progress."""
     query = """
         SELECT 
@@ -5728,7 +5728,7 @@ async def monitor_autovacuum_progress() -> list[dict]:
     return rows
 
 @mcp.tool()
-async def check_table_inheritance() -> list[dict]:
+async def check_table_inheritance():
     """Analyze table inheritance hierarchies and partitioning structures."""
     query = """
         SELECT 
@@ -5760,7 +5760,7 @@ async def check_table_inheritance() -> list[dict]:
     return rows
 
 @mcp.tool()
-async def analyze_query_complexity() -> list[dict]:
+async def analyze_query_complexity():
     """Analyze query complexity patterns from pg_stat_statements."""
     query = """
         SELECT 
@@ -5799,7 +5799,7 @@ async def analyze_query_complexity() -> list[dict]:
     return rows
 
 @mcp.tool()
-async def monitor_wal_generation_rate() -> list[dict]:
+async def monitor_wal_generation_rate():
     """Monitor WAL generation rate and predict disk space requirements."""
     query = """
         SELECT 
@@ -5823,7 +5823,7 @@ async def monitor_wal_generation_rate() -> list[dict]:
     return rows
 
 @mcp.tool()
-async def check_database_encoding_collation() -> list[dict]:
+async def check_database_encoding_collation():
     """Check database encoding, collation settings and potential issues."""
     query = """
         SELECT 
@@ -5854,7 +5854,7 @@ async def check_database_encoding_collation() -> list[dict]:
     return rows
 
 @mcp.tool()
-async def analyze_trigger_performance() -> list[dict]:
+async def analyze_trigger_performance():
     """Analyze trigger definitions and potential performance impacts."""
     query = """
         SELECT 
@@ -5895,7 +5895,7 @@ async def analyze_trigger_performance() -> list[dict]:
     return rows
 
 @mcp.tool()
-async def monitor_checkpoint_efficiency() -> list[dict]:
+async def monitor_checkpoint_efficiency():
     """Monitor checkpoint efficiency and timing patterns."""
     query = """
         SELECT 
@@ -5925,7 +5925,7 @@ async def monitor_checkpoint_efficiency() -> list[dict]:
     return rows
 
 @mcp.tool()
-async def analyze_foreign_key_locks() -> list[dict]:
+async def analyze_foreign_key_locks():
     """Analyze foreign key constraints that might cause locking issues."""
     query = """
         SELECT 
@@ -5963,7 +5963,7 @@ async def analyze_foreign_key_locks() -> list[dict]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_query_runtime_distribution() -> list[dict]:
+async def PostgreSQL_get_query_runtime_distribution():
     """Get distribution of query runtime in different time buckets."""
     query = """
         SELECT 
@@ -6003,7 +6003,7 @@ async def PostgreSQL_get_query_runtime_distribution() -> list[dict]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_table_access_patterns() -> list[dict]:
+async def PostgreSQL_get_table_access_patterns():
     """Analyze table access patterns - sequential scans vs index usage."""
     query = """
         SELECT 
@@ -6035,7 +6035,7 @@ async def PostgreSQL_get_table_access_patterns() -> list[dict]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_concurrent_connection_analysis() -> list[dict]:
+async def PostgreSQL_get_concurrent_connection_analysis():
     """Analyze concurrent connections and their states over time."""
     query = """
         SELECT 
@@ -6056,7 +6056,7 @@ async def PostgreSQL_get_concurrent_connection_analysis() -> list[dict]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_checkpoint_analysis() -> list[dict]:
+async def PostgreSQL_get_checkpoint_analysis():
     """Analyze checkpoint frequency and performance metrics."""
     query = """
         SELECT 
@@ -6079,7 +6079,7 @@ async def PostgreSQL_get_checkpoint_analysis() -> list[dict]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_table_fragmentation_analysis() -> list[dict]:
+async def PostgreSQL_get_table_fragmentation_analysis():
     """Analyze table fragmentation and bloat estimation."""
     query = """
         SELECT 
@@ -6114,7 +6114,7 @@ async def PostgreSQL_get_table_fragmentation_analysis() -> list[dict]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_query_plan_cache_analysis() -> list[dict]:
+async def PostgreSQL_get_query_plan_cache_analysis():
     """Analyze query plan cache usage and effectiveness."""
     query = """
         SELECT 
@@ -6149,7 +6149,7 @@ async def PostgreSQL_get_query_plan_cache_analysis() -> list[dict]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_sequence_usage_risks() -> list[dict]:
+async def PostgreSQL_get_sequence_usage_risks():
     """Identify sequences approaching their limits or with risky usage patterns."""
     query = """
         SELECT 
@@ -6184,7 +6184,7 @@ async def PostgreSQL_get_sequence_usage_risks() -> list[dict]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_trigger_performance_impact() -> list[dict]:
+async def PostgreSQL_get_trigger_performance_impact():
     """Analyze trigger performance impact on tables."""
     query = """
         SELECT 
@@ -6219,7 +6219,7 @@ async def PostgreSQL_get_trigger_performance_impact() -> list[dict]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_connection_pool_analysis() -> list[dict]:
+async def PostgreSQL_get_connection_pool_analysis():
     """Analyze connection pool efficiency and usage patterns."""
     query = """
         SELECT 
@@ -6251,7 +6251,7 @@ async def PostgreSQL_get_connection_pool_analysis() -> list[dict]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_query_error_analysis() -> list[dict]:
+async def PostgreSQL_get_query_error_analysis():
     """Analyze query errors and failure patterns from logs."""
     query = """
         SELECT 
@@ -6285,7 +6285,7 @@ async def PostgreSQL_get_query_error_analysis() -> list[dict]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_index_maintenance_status() -> list[dict]:
+async def PostgreSQL_get_index_maintenance_status():
     """Check index maintenance status and identify problematic indexes."""
     query = """
         SELECT 
@@ -6322,7 +6322,7 @@ async def PostgreSQL_get_index_maintenance_status() -> list[dict]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_transaction_age_monitoring() -> list[dict]:
+async def PostgreSQL_get_transaction_age_monitoring():
     """Monitor transaction age and identify long-running or problematic transactions."""
     query = """
         SELECT 
@@ -6356,7 +6356,7 @@ async def PostgreSQL_get_transaction_age_monitoring() -> list[dict]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_write_ahead_log_analysis() -> list[dict]:
+async def PostgreSQL_get_write_ahead_log_analysis():
     """Analyze Write-Ahead Log (WAL) generation and archiving performance."""
     query = """
         SELECT 
@@ -6401,7 +6401,7 @@ async def PostgreSQL_get_write_ahead_log_analysis() -> list[dict]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_memory_context_analysis() -> list[dict]:
+async def PostgreSQL_get_memory_context_analysis():
     """Analyze PostgreSQL memory context usage and identify memory-intensive operations."""
     query = """
         SELECT 
@@ -6441,7 +6441,7 @@ async def PostgreSQL_get_memory_context_analysis() -> list[dict]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_extension_usage_analysis() -> list[dict]:
+async def PostgreSQL_get_extension_usage_analysis():
     """Analyze installed extensions and their usage patterns."""
     query = """
         SELECT 
@@ -6475,7 +6475,7 @@ async def PostgreSQL_get_extension_usage_analysis() -> list[dict]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_backup_recovery_readiness() -> list[dict]:
+async def PostgreSQL_get_backup_recovery_readiness():
     """Assess backup and recovery readiness of the PostgreSQL instance."""
     query = """
         SELECT 
@@ -6545,7 +6545,7 @@ async def PostgreSQL_get_backup_recovery_readiness() -> list[dict]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_constraint_violation_risks() -> list[dict]:
+async def PostgreSQL_get_constraint_violation_risks():
     """Identify potential constraint violation risks and integrity issues."""
     query = """
         SELECT 
@@ -6593,7 +6593,7 @@ async def PostgreSQL_get_constraint_violation_risks() -> list[dict]:
     return rows
 
 @mcp.tool()
-async def PostgreSQL_get_performance_regression_indicators() -> list[dict]:
+async def PostgreSQL_get_performance_regression_indicators():
     """Identify potential performance regression indicators in queries and operations."""
     query = """
         SELECT 
@@ -6637,20 +6637,20 @@ async def PostgreSQL_get_performance_regression_indicators() -> list[dict]:
 
 # Resources
 @mcp.resource("postgres://tables/{schema}")
-async def get_tables_resource(schema: str = "public") -> str:
+async def get_tables_resource(schema: str = "public"):
     """Get a list of all tables in the specified schema."""
     tables = await PostgreSQL_list_tables(schema)
-    return json.dumps([table.dict() for table in tables], indent=2)
+    return json.dumps([table.model_dump() for table in tables], indent=2)
 
 @mcp.resource("postgres://table/{schema}/{table_name}")
-async def get_table_resource(schema: str, table_name: str) -> str:
+async def get_table_resource(schema: str, table_name: str):
     """Get detailed information about a specific table."""
     columns = await PostgreSQL_describe_table(table_name, schema)
-    return json.dumps([col.dict() for col in columns], indent=2)
+    return json.dumps([col.model_dump() for col in columns], indent=2)
 
 # Prompts
 @mcp.prompt()
-async def analyze_table(table_name: str, schema_name: str = "public") -> str:
+async def analyze_table(table_name: str, schema_name: str = "public"):
     """Generate a prompt for analyzing a database table.
     
     Args:
@@ -6667,7 +6667,7 @@ async def analyze_table(table_name: str, schema_name: str = "public") -> str:
     return prompt_text
 
 @mcp.prompt()
-async def query_builder(table_name: str, action: str = "select") -> str:
+async def query_builder(table_name: str, action: str = "select"):
     """Generate a prompt for building SQL queries.
     
     Args:
@@ -6687,7 +6687,7 @@ async def query_builder(table_name: str, action: str = "select") -> str:
 # Advanced PostgreSQL tools for performance monitoring and administration
 
 @mcp.tool()
-async def PostgreSQL_connection_pool_stats() -> str:
+async def PostgreSQL_connection_pool_stats():
     """Get PostgreSQL connection pool statistics and backend process information."""
     query = """
     SELECT 
@@ -6705,7 +6705,7 @@ async def PostgreSQL_connection_pool_stats() -> str:
     return json.dumps([dict(row) for row in result], default=str, indent=2)
 
 @mcp.tool()
-async def PostgreSQL_buffer_cache_hit_ratio() -> str:
+async def PostgreSQL_buffer_cache_hit_ratio():
     """Analyze buffer cache hit ratios for all databases and tables."""
     query = """
     SELECT 
@@ -6731,7 +6731,7 @@ async def PostgreSQL_buffer_cache_hit_ratio() -> str:
     return json.dumps([dict(row) for row in result], default=str, indent=2)
 
 @mcp.tool()
-async def PostgreSQL_checkpoint_activity() -> str:
+async def PostgreSQL_checkpoint_activity():
     """Get detailed checkpoint activity and WAL statistics."""
     query = """
     SELECT 
@@ -6753,7 +6753,7 @@ async def PostgreSQL_checkpoint_activity() -> str:
     return json.dumps([dict(row) for row in result], default=str, indent=2)
 
 @mcp.tool()
-async def PostgreSQL_wait_events_analysis() -> str:
+async def PostgreSQL_wait_events_analysis():
     """Analyze current wait events and blocking processes."""
     query = """
     SELECT 
@@ -6778,7 +6778,7 @@ async def PostgreSQL_wait_events_analysis() -> str:
     return json.dumps([dict(row) for row in result], default=str, indent=2)
 
 @mcp.tool()
-async def PostgreSQL_table_size_growth() -> str:
+async def PostgreSQL_table_size_growth():
     """Analyze table size growth and storage efficiency."""
     query = """
     SELECT 
@@ -6808,7 +6808,7 @@ async def PostgreSQL_table_size_growth() -> str:
     return json.dumps([dict(row) for row in result], default=str, indent=2)
 
 @mcp.tool()
-async def PostgreSQL_index_scan_efficiency() -> str:
+async def PostgreSQL_index_scan_efficiency():
     """Analyze index usage efficiency and identify unused indexes."""
     query = """
     SELECT 
@@ -6835,7 +6835,7 @@ async def PostgreSQL_index_scan_efficiency() -> str:
     return json.dumps([dict(row) for row in result], default=str, indent=2)
 
 @mcp.tool()
-async def PostgreSQL_transaction_wraparound_monitoring() -> str:
+async def PostgreSQL_transaction_wraparound_monitoring():
     """Monitor transaction ID wraparound status for all databases."""
     query = """
     SELECT 
@@ -6857,7 +6857,7 @@ async def PostgreSQL_transaction_wraparound_monitoring() -> str:
     return json.dumps([dict(row) for row in result], default=str, indent=2)
 
 @mcp.tool()
-async def PostgreSQL_memory_usage_analysis() -> str:
+async def PostgreSQL_memory_usage_analysis():
     """Analyze PostgreSQL memory usage and shared memory statistics."""
     query = """
     SELECT 
@@ -6882,7 +6882,7 @@ async def PostgreSQL_memory_usage_analysis() -> str:
     return json.dumps([dict(row) for row in result], default=str, indent=2)
 
 @mcp.tool()
-async def PostgreSQL_backup_recovery_info() -> str:
+async def PostgreSQL_backup_recovery_info():
     """Get backup and recovery related information including WAL archiving status."""
     query = """
     SELECT 
@@ -6906,7 +6906,7 @@ async def PostgreSQL_backup_recovery_info() -> str:
     return json.dumps([dict(row) for row in result], default=str, indent=2)
 
 @mcp.tool()
-async def PostgreSQL_autovacuum_tuning() -> str:
+async def PostgreSQL_autovacuum_tuning():
     """Analyze autovacuum settings and provide tuning recommendations."""
     query = """
     SELECT 
@@ -6939,7 +6939,7 @@ async def PostgreSQL_autovacuum_tuning() -> str:
     return json.dumps([dict(row) for row in result], default=str, indent=2)
 
 @mcp.tool()
-async def PostgreSQL_query_plan_cache() -> str:
+async def PostgreSQL_query_plan_cache():
     """Analyze query plan cache statistics from pg_stat_statements if available."""
     query = """
     SELECT 
@@ -6970,7 +6970,7 @@ async def PostgreSQL_query_plan_cache() -> str:
         return json.dumps({"error": "pg_stat_statements extension not available or not installed", "details": str(e)}, indent=2)
 
 @mcp.tool()
-async def PostgreSQL_constraint_violations() -> str:
+async def PostgreSQL_constraint_violations():
     """Check for constraint violations and data integrity issues."""
     query = """
     SELECT 
@@ -6997,7 +6997,7 @@ async def PostgreSQL_constraint_violations() -> str:
     return json.dumps([dict(row) for row in result], default=str, indent=2)
 
 @mcp.tool()
-async def PostgreSQL_extension_usage() -> str:
+async def PostgreSQL_extension_usage():
     """List installed extensions and their usage statistics."""
     query = """
     SELECT 
@@ -7020,7 +7020,7 @@ async def PostgreSQL_extension_usage() -> str:
     return json.dumps([dict(row) for row in result], default=str, indent=2)
 
 @mcp.tool()
-async def PostgreSQL_disk_usage_forecast() -> str:
+async def PostgreSQL_disk_usage_forecast():
     """Analyze database growth patterns and forecast disk usage."""
     query = """
     SELECT 
@@ -7049,7 +7049,7 @@ async def PostgreSQL_disk_usage_forecast() -> str:
     return json.dumps([dict(row) for row in result], default=str, indent=2)
 
 @mcp.tool()
-async def PostgreSQL_replication_lag_detailed() -> str:
+async def PostgreSQL_replication_lag_detailed():
     """Get detailed replication lag information for streaming replication."""
     query = """
     SELECT 
@@ -7078,7 +7078,7 @@ async def PostgreSQL_replication_lag_detailed() -> str:
     return json.dumps([dict(row) for row in result], default=str, indent=2)
 
 @mcp.tool()
-async def PostgreSQL_security_audit() -> str:
+async def PostgreSQL_security_audit():
     """Perform basic security audit checks on database configuration."""
     query = """
     SELECT 
@@ -7128,7 +7128,7 @@ async def PostgreSQL_security_audit() -> str:
     return json.dumps([dict(row) for row in result], default=str, indent=2)
 
 @mcp.tool()
-async def PostgreSQL_temp_file_usage() -> str:
+async def PostgreSQL_temp_file_usage():
     """Monitor temporary file usage which indicates memory pressure."""
     query = """
     SELECT 
@@ -7151,7 +7151,7 @@ async def PostgreSQL_temp_file_usage() -> str:
     return json.dumps([dict(row) for row in result], default=str, indent=2)
 
 @mcp.tool()
-async def PostgreSQL_partition_maintenance() -> str:
+async def PostgreSQL_partition_maintenance():
     """Analyze partitioned tables and their maintenance status."""
     query = """
     SELECT 
@@ -7181,7 +7181,7 @@ async def PostgreSQL_partition_maintenance() -> str:
         return json.dumps({"info": "No partitioned tables found or partitioning not supported in this PostgreSQL version", "details": str(e)}, indent=2)
 
 @mcp.tool()
-async def PostgreSQL_deadlock_analysis() -> str:
+async def PostgreSQL_deadlock_analysis():
     """Analyze deadlock history and patterns from logs."""
     query = """
     SELECT 
@@ -7214,7 +7214,7 @@ async def PostgreSQL_deadlock_analysis() -> str:
     return json.dumps([dict(row) for row in result], default=str, indent=2)
 
 @mcp.tool()
-async def PostgreSQL_index_dead_tuples_analysis() -> str:
+async def PostgreSQL_index_dead_tuples_analysis():
     """Analyze dead tuples per index for vacuum optimization."""
     query = """
     SELECT 
@@ -7239,7 +7239,7 @@ async def PostgreSQL_index_dead_tuples_analysis() -> str:
     return json.dumps([dict(row) for row in result], default=str, indent=2)
 
 @mcp.tool()
-async def PostgreSQL_vacuum_analyze_frequency_analysis() -> str:
+async def PostgreSQL_vacuum_analyze_frequency_analysis():
     """Compare vacuum/analyze frequency with table modification rates."""
     query = """
     SELECT 
@@ -7273,7 +7273,7 @@ async def PostgreSQL_vacuum_analyze_frequency_analysis() -> str:
     return json.dumps([dict(row) for row in result], default=str, indent=2)
 
 @mcp.tool()
-async def PostgreSQL_seqscan_heavy_tables() -> str:
+async def PostgreSQL_seqscan_heavy_tables():
     """Identify tables with high sequential scans that might need indexes."""
     query = """
     SELECT 
@@ -7304,7 +7304,7 @@ async def PostgreSQL_seqscan_heavy_tables() -> str:
     return json.dumps([dict(row) for row in result], default=str, indent=2)
 
 @mcp.tool()
-async def PostgreSQL_index_bloat_maintenance_analysis() -> str:
+async def PostgreSQL_index_bloat_maintenance_analysis():
     """Analyze index bloat and suggest maintenance actions."""
     query = """
     SELECT 
@@ -7335,7 +7335,7 @@ async def PostgreSQL_index_bloat_maintenance_analysis() -> str:
     return json.dumps([dict(row) for row in result], default=str, indent=2)
 
 @mcp.tool()
-async def PostgreSQL_non_autovacuum_friendly_datatypes() -> str:
+async def PostgreSQL_non_autovacuum_friendly_datatypes():
     """Identify tables with data types that may affect autovacuum efficiency."""
     query = """
     SELECT 
@@ -7372,7 +7372,7 @@ async def PostgreSQL_non_autovacuum_friendly_datatypes() -> str:
     return json.dumps([dict(row) for row in result], default=str, indent=2)
 
 @mcp.tool()
-async def PostgreSQL_query_cancellation_analysis() -> str:
+async def PostgreSQL_query_cancellation_analysis():
     """Detect and analyze frequent query cancellations and their causes."""
     query = """
     SELECT 
@@ -7406,7 +7406,7 @@ async def PostgreSQL_query_cancellation_analysis() -> str:
     return json.dumps([dict(row) for row in result], default=str, indent=2)
 
 @mcp.tool()
-async def PostgreSQL_temporary_objects_usage() -> str:
+async def PostgreSQL_temporary_objects_usage():
     """Analyze temporary table and file usage patterns."""
     query = """
     SELECT 
@@ -7435,7 +7435,7 @@ async def PostgreSQL_temporary_objects_usage() -> str:
     return json.dumps([dict(row) for row in result], default=str, indent=2)
 
 @mcp.tool()
-async def PostgreSQL_wal_segment_recycling_analysis() -> str:
+async def PostgreSQL_wal_segment_recycling_analysis():
     """Detect excessive WAL segment recycling that might indicate tuning issues."""
     query = """
     SELECT 
@@ -7483,7 +7483,7 @@ async def PostgreSQL_wal_segment_recycling_analysis() -> str:
     return json.dumps([dict(row) for row in result], default=str, indent=2)
 
 @mcp.tool()
-async def PostgreSQL_maintenance_window_activity() -> str:
+async def PostgreSQL_maintenance_window_activity():
     """Analyze database activity patterns during typical maintenance windows."""
     query = """
     SELECT 
@@ -7518,7 +7518,7 @@ async def PostgreSQL_maintenance_window_activity() -> str:
     return json.dumps([dict(row) for row in result], default=str, indent=2)
 
 @mcp.tool()
-async def PostgreSQL_long_execution_triggers() -> str:
+async def PostgreSQL_long_execution_triggers():
     """Detect triggers with long average execution times that may impact performance."""
     query = """
     SELECT 
@@ -7548,7 +7548,7 @@ async def PostgreSQL_long_execution_triggers() -> str:
     return json.dumps([dict(row) for row in result], default=str, indent=2)
 
 @mcp.tool()
-async def PostgreSQL_prepared_transaction_retention() -> str:
+async def PostgreSQL_prepared_transaction_retention():
     """Analyze prepared transaction retention times and potential issues."""
     query = """
     SELECT 
@@ -7575,7 +7575,7 @@ async def PostgreSQL_prepared_transaction_retention() -> str:
         return json.dumps({"info": "No prepared transactions found or feature not available", "details": str(e)}, indent=2)
 
 @mcp.tool()
-async def PostgreSQL_toast_table_excessive_usage() -> str:
+async def PostgreSQL_toast_table_excessive_usage():
     """Identify tables with excessively large TOAST table sizes relative to main table."""
     query = """
     SELECT 
@@ -7610,7 +7610,7 @@ async def PostgreSQL_toast_table_excessive_usage() -> str:
     return json.dumps([dict(row) for row in result], default=str, indent=2)
 
 @mcp.tool()
-async def PostgreSQL_plan_invalidation_analysis() -> str:
+async def PostgreSQL_plan_invalidation_analysis():
     """Analyze common reasons for query plan invalidation and cache misses."""
     query = """
     SELECT 
@@ -7642,7 +7642,7 @@ async def PostgreSQL_plan_invalidation_analysis() -> str:
     return json.dumps([dict(row) for row in result], default=str, indent=2)
 
 @mcp.tool()
-async def PostgreSQL_orphaned_prepared_transactions() -> str:
+async def PostgreSQL_orphaned_prepared_transactions():
     """Detect large numbers of orphaned prepared transactions that need cleanup."""
     query = """
     SELECT 
@@ -7670,7 +7670,7 @@ async def PostgreSQL_orphaned_prepared_transactions() -> str:
         return json.dumps({"info": "No prepared transactions or feature not available", "details": str(e)}, indent=2)
 
 @mcp.tool()
-async def PostgreSQL_connection_churn_analysis() -> str:
+async def PostgreSQL_connection_churn_analysis():
     """Analyze connection churn and idle times per user/application."""
     query = """
     SELECT 
@@ -7704,7 +7704,7 @@ async def PostgreSQL_connection_churn_analysis() -> str:
     return json.dumps([dict(row) for row in result], default=str, indent=2)
 
 @mcp.tool()
-async def PostgreSQL_statistics_reset_frequency() -> str:
+async def PostgreSQL_statistics_reset_frequency():
     """Detect frequent planner statistics resets that might indicate issues."""
     query = """
     SELECT 
@@ -7734,7 +7734,7 @@ async def PostgreSQL_statistics_reset_frequency() -> str:
     return json.dumps([dict(row) for row in result], default=str, indent=2)
 
 @mcp.tool()
-async def PostgreSQL_unlogged_tables_analysis() -> str:
+async def PostgreSQL_unlogged_tables_analysis():
     """Analyze usage of unlogged tables and their implications."""
     query = """
     SELECT 
@@ -7776,7 +7776,7 @@ async def PostgreSQL_unlogged_tables_analysis() -> str:
     return json.dumps([dict(row) for row in result], default=str, indent=2)
 
 @mcp.tool()
-async def PostgreSQL_foreign_key_orphaned_references() -> str:
+async def PostgreSQL_foreign_key_orphaned_references():
     """Find tables with foreign keys that might reference deleted rows (integrity issues)."""
     query = """
     SELECT 
@@ -7808,7 +7808,7 @@ async def PostgreSQL_foreign_key_orphaned_references() -> str:
     return json.dumps([dict(row) for row in result], default=str, indent=2)
 
 @mcp.tool()
-async def PostgreSQL_parameter_sniffing_detection() -> str:
+async def PostgreSQL_parameter_sniffing_detection():
     """Detect potential parameter sniffing issues in prepared statements."""
     query = """
     SELECT 
@@ -7859,7 +7859,7 @@ async def PostgreSQL_create_table(
     columns: List[ColumnDefinition], 
     ctx: Context,
     schema_name: str = "public"
-) -> str:
+):
     """
     Create a new table with specified columns.
     
